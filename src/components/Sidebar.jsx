@@ -1,14 +1,11 @@
 import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
-  const baseStyle =
-    "px-3 py-2 rounded transition-colors";
+  const baseStyle = "px-3 py-2 rounded transition-colors";
 
-  const activeStyle =
-    "bg-zinc-800 text-white";
+  const activeStyle = "bg-zinc-800 text-white";
 
-  const inactiveStyle =
-    "text-zinc-300 hover:bg-zinc-800 hover:text-white";
+  const inactiveStyle = "text-zinc-300 hover:bg-zinc-800 hover:text-white";
 
   return (
     <div className="w-60 bg-zinc-900 text-zinc-200 p-5 space-y-4 border-r border-zinc-800">
@@ -17,16 +14,7 @@ export default function Sidebar() {
       <nav className="flex flex-col gap-2">
 
         <NavLink
-          to="/dashboard"
-          className={({ isActive }) =>
-            `${baseStyle} ${isActive ? activeStyle : inactiveStyle}`
-          }
-        >
-          Dashboard
-        </NavLink>
-
-        <NavLink
-          to="/punch"
+          to="/punchin"
           className={({ isActive }) =>
             `${baseStyle} ${isActive ? activeStyle : inactiveStyle}`
           }
@@ -60,7 +48,6 @@ export default function Sidebar() {
         >
           Routes
         </NavLink>
-
       </nav>
     </div>
   );

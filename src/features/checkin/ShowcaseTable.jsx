@@ -1,18 +1,48 @@
 import { useState } from "react";
 import Table from "../../components/Table";
+import Button from "../../components/Button";
 
-export default function ShowcaseTable({
-  rows,
-  saved,
-  onAddRow,
-  onDeleteRow,
-  onChange,
-  onSave,
-  setSaved,
-}) {
+export default function ShowcaseTable() {
+  const emptyRow = {
+    category: "",
+    product: "",
+    image: null,
+  };
+
+  const [rows, setRows] = useState([{ ...emptyRow }]);
+  const [saved, setSaved] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
 
-  /* -------- SAVED TABLE ACTIONS -------- */
+  // to reset image name in browser
+ const [fileKey, setFileKey] = useState(0);
+
+  /* -------- INPUT TABLE LOGIC -------- */
+
+  const addRow = () => setRows([...rows, { ...emptyRow }]);
+
+  const deleteRow = (index) => setRows(rows.filter((_, i) => i !== index));
+
+  const updateRow = (index, key, value) => {
+    const copy = [...rows];
+    copy[index][key] = value;
+    setRows(copy);
+  };
+
+  const isValid = () => rows.every((r) => r.category && r.product && r.image);
+
+  const handleAddToSaved = () => {
+    if (!isValid()) {
+      return;
+    }
+
+    setSaved([...saved, ...rows]);
+    setRows([{ ...emptyRow }]);
+
+    // force file input reset
+    setFileKey((prev) => prev + 1);
+  };
+
+  /* -------- SAVED TABLE LOGIC -------- */
 
   const handleSavedChange = (i, key, value) => {
     const copy = [...saved];
@@ -20,18 +50,24 @@ export default function ShowcaseTable({
     setSaved(copy);
   };
 
-  const handleDeleteSaved = (i) => {
+  const handleDeleteSaved = (i) =>
     setSaved(saved.filter((_, idx) => idx !== i));
-  };
 
-  const handleSaveEdit = () => {
-    setEditIndex(null);
-  };
+  const handleSaveEdit = () => setEditIndex(null);
+
+const handleSaveToDatabase = () => {
+  console.log(saved)
+}
 
   return (
     <div className="space-y-4">
+      <div className="flex justify-end">
+        <Button variant="neutral" size="md" onClick={addRow}>
+          Add Row
+        </Button>
+      </div>
 
-      {/* -------- INPUT TABLE -------- */}
+      {/* INPUT TABLE */}
       <Table>
         <Table.Header>
           <Table.Cell>Category</Table.Cell>
@@ -47,59 +83,43 @@ export default function ShowcaseTable({
               <Table.Cell>
                 <Table.Input
                   value={row.category}
-                  onChange={(e) =>
-                    onChange(i, "category", e.target.value)
-                  }
+                  onChange={(e) => updateRow(i, "category", e.target.value)}
                 />
               </Table.Cell>
 
               <Table.Cell>
                 <Table.Input
                   value={row.product}
-                  onChange={(e) =>
-                    onChange(i, "product", e.target.value)
-                  }
+                  onChange={(e) => updateRow(i, "product", e.target.value)}
                 />
               </Table.Cell>
 
               <Table.Cell>
                 <input
+                  key={fileKey}
                   type="file"
-                  onChange={(e) =>
-                    onChange(
-                      i,
-                      "image",
-                      e.target.files[0]
-                    )
-                  }
+                  onChange={(e) => updateRow(i, "image", e.target.files[0])}
                 />
               </Table.Cell>
 
               <Table.Cell>
-                <Table.Button
-                  variant="delete"
-                  onClick={() => onDeleteRow(i)}
-                >
-                  delete
-                </Table.Button>
+                <Button variant="delete" onClick={() => deleteRow(i)}>
+                  Delete
+                </Button>
               </Table.Cell>
             </Table.Row>
           )}
         />
       </Table>
 
-      {/* -------- BUTTONS -------- */}
+      {/* BUTTONS */}
       <div className="flex gap-3">
-        <Table.Button onClick={onAddRow}>
-          Add Row
-        </Table.Button>
-
-        <Table.Button onClick={onSave}>
-          Save
-        </Table.Button>
+        <Button variant="primary" size="md" onClick={handleAddToSaved} disabled={!isValid()}>
+          Add
+        </Button>
       </div>
 
-      {/* -------- SAVED TABLE -------- */}
+      {/* SAVED TABLE */}
       {saved.length > 0 && (
         <Table>
           <Table.Header>
@@ -118,11 +138,7 @@ export default function ShowcaseTable({
                     <Table.Input
                       value={row.category}
                       onChange={(e) =>
-                        handleSavedChange(
-                          i,
-                          "category",
-                          e.target.value
-                        )
+                        handleSavedChange(i, "category", e.target.value)
                       }
                     />
                   ) : (
@@ -135,11 +151,7 @@ export default function ShowcaseTable({
                     <Table.Input
                       value={row.product}
                       onChange={(e) =>
-                        handleSavedChange(
-                          i,
-                          "product",
-                          e.target.value
-                        )
+                        handleSavedChange(i, "product", e.target.value)
                       }
                     />
                   ) : (
@@ -147,39 +159,35 @@ export default function ShowcaseTable({
                   )}
                 </Table.Cell>
 
-                <Table.Cell>
-                  {row.image?.name || "Image"}
-                </Table.Cell>
+                <Table.Cell>{row.image?.name || "Image"}</Table.Cell>
 
                 <Table.Cell>
                   {editIndex === i ? (
-                    <Table.Button
-                      variant="save"
-                      onClick={handleSaveEdit}
-                    >
-                      Save Edit
-                    </Table.Button>
+                    <Button variant="saveEdit" size="sm" onClick={handleSaveEdit}>Save Edit</Button>
                   ) : (
-                    <Table.Button
-                      variant="edit"
-                      onClick={() => setEditIndex(i)}
-                    >
-                      Edit
-                    </Table.Button>
+                    <Button variant="edit" size ="sm" onClick={() => setEditIndex(i)}>Edit</Button>
                   )}
 
-                  <Table.Button
-                    variant="delete"
-                    onClick={() => handleDeleteSaved(i)}
-                  >
+                  <Button variant="delete" onClick={() => handleDeleteSaved(i)}>
                     Delete
-                  </Table.Button>
+                  </Button>
                 </Table.Cell>
               </Table.Row>
             )}
           />
         </Table>
       )}
+      {saved.length > 0 && (
+  <div >
+    <Button
+      variant="primary"
+      size="md"
+      onClick={handleSaveToDatabase}
+    >
+      Save to Database
+    </Button>
+  </div>
+)}
     </div>
   );
 }

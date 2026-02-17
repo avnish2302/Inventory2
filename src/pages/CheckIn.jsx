@@ -1,127 +1,73 @@
-<<<<<<< HEAD
-import { useNavigate, useParams } from "react-router-dom";
 import Basic from "../features/checkin/Basic";
-import RecordInventory from "../features/checkin/RecodInventory";
-import Showcase from "../features/checkin/Showcase"
 import Own from "../features/checkin/Own";
-
+import RecordInventory from "../features/checkin/RecordInventory";
+import ShowCase from "../features/checkin/ShowCase";
+import Menu from "../features/checkin/Menu"
+import { useNavigate, useParams } from "react-router-dom";
+import Promotions from "../features/checkin/Promotions";
+import Collection from "../features/checkin/Collection";
+import AssetAssignment from "../features/checkin/AssetAssignment";
 
 export default function CheckIn() {
-  const navigate = useNavigate();
-  const { tab = "basic" } = useParams(); 
+  const navigate = useNavigate()
+  //const [tab, setTab] = useState("basic");
+  const {tab = "basic"} = useParams()
 
   const tabs = [
-    "basic",
-    "own",
-    "record inventory",
-    "showcase",
-    "menu",
-    "assets",
-    "promotions",
-    "collection",
+    { key: "basic", label: "Basic" },
+    { key: "own-inventory", label: "Own Inventory" },
+    { key: "record-inventory", label: "Record Inventory" },
+    { key: "showcase", label: "Showcase" },
+    { key: "menu", label: "Menu" },
+    { key: "assets", label: "Asset Assignment" },
+    { key: "promotions", label: "Promotions" },
+    { key: "collection", label: "Collection" },
   ];
-=======
-import { useState } from "react";
-
-// IMPORT FROM FOLDER
-import OwnInventory from "./checkin/OwnInventory";
-import Basic from "./checkin/Basic";
-
-export default function CheckIn() {
-  const [tab, setTab] = useState("basic");
->>>>>>> ed06820a01d41180439ee8fc7c6e2424b2ac8da8
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-amber-700 mb-4">
+    <div className="space-y-6">
+
+      {/* PAGE TITLE */}
+      <h2 className="text-2xl font-bold text-amber-700">
         Check-In
       </h2>
 
-      {/* Tabs */}
-      <div className="flex gap-2 mb-4 flex-wrap">
-<<<<<<< HEAD
-        {tabs.map((t) => (
+      {/* TABS */}
+      <div className="flex gap-2 flex-wrap">
+        {tabs.map(t => (
           <button
-            key={t}
-            onClick={() => navigate(`/checkin/${t}`)}
-=======
-        {[
-          "basic",
-          "own",
-          "competitor",
-          "showcase",
-          "menu",
-          "assets",
-          "promotions",
-          "collection",
-        ].map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
->>>>>>> ed06820a01d41180439ee8fc7c6e2424b2ac8da8
-            className={`px-3 py-1 rounded capitalize ${
-              tab === t ? "bg-amber-800" : "bg-zinc-800"
-            }`}
+            key={t.key}
+            onClick={() => navigate(`/checkin/${t.key}`)}
+            className={`
+              px-3 py-1 rounded
+              ${tab === t.key
+                ? "bg-amber-800 text-white"
+                : "bg-zinc-800 hover:bg-zinc-700"}
+            `}
           >
-            {t}
+            {t.label}
           </button>
         ))}
       </div>
 
-<<<<<<< HEAD
-      {/* Content */}
-      {tab === "basic" && <Basic/>}
-      {tab === "own" && <Own/>}
-
-      {tab === "record inventory" && <RecordInventory/>}
-
-      {tab === "showcase" && <Showcase/>}
-=======
       {/* TAB CONTENT */}
 
-      {/* BASIC */}
       {tab === "basic" && <Basic />}
 
-      {/* OWN INVENTORY */}
-      {tab === "own" && <OwnInventory />}
+      {tab === "own-inventory" && <Own />}
 
-      {/* PLACEHOLDERS FOR NOW */}
-      {tab === "competitor" && (
-        <div className="bg-zinc-900 p-6 rounded">
-          Record Inventory (Competitor)
-        </div>
-      )}
+      {tab === "record-inventory" && <RecordInventory />}
 
-      {tab === "showcase" && (
-        <div className="bg-zinc-900 p-6 rounded">
-          Showcase / On-Display
-        </div>
-      )}
->>>>>>> ed06820a01d41180439ee8fc7c6e2424b2ac8da8
+      {tab === "showcase" && <ShowCase />}
 
-      {tab === "menu" && (
-        <div className="bg-zinc-900 p-6 rounded">
-          Menu (On Trade, HCR)
-        </div>
-      )}
+      {tab === "menu" && <Menu/>}
 
-      {tab === "assets" && (
-        <div className="bg-zinc-900 p-6 rounded">
-          Asset Assignment
-        </div>
-      )}
+      {tab === "assets" && <AssetAssignment/>}
 
-      {tab === "promotions" && (
-        <div className="bg-zinc-900 p-6 rounded">
-          Promotions
-        </div>
-      )}
+      {tab === "promotions" && <Promotions/>}
 
-      {tab === "collection" && (
-        <div className="bg-zinc-900 p-6 rounded">
-          Collection
-        </div>
-      )}
+      {tab === "collection" && <Collection/>}
+
     </div>
   );
 }

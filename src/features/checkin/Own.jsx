@@ -1,5 +1,6 @@
 import { useState } from "react";
 import InventoryTable from "../../components/InventoryTable";
+import Button from "../../components/Button";
 
 export default function Own() {
   const [category, setCategory] = useState("");
@@ -92,17 +93,14 @@ export default function Own() {
           <option>Kibba (DD)</option>
         </select>
 
-        <button
+        <Button
+          variant = "primary"
+          size = "md"
           onClick={handleAdd}
           disabled={!category || !product}
-          className="
-    bg-amber-800 px-4 rounded text-white
-    disabled:opacity-40
-    disabled:cursor-not-allowed
-  "
         >
           Add Row
-        </button>
+        </Button>
       </div>
 
       {/* TABLE */}
@@ -168,17 +166,12 @@ export default function Own() {
       </div>
 
       {/* SAVE */}
-      <button
-        onClick={handleSave}
-        disabled={!isValid}
-        className="
-          bg-amber-800 px-6 py-2 rounded text-white
-          disabled:opacity-40
-          disabled:cursor-not-allowed
-        "
+      <Button
+      variant = "primary"
+      size = "md"
       >
-        Save
-      </button>
+        Add
+      </Button>
 
       {/* SAVED TABLE */}
       {/* SAVED TABLE */}

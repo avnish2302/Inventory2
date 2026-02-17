@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Table from "../../components/Table";
+import Button from "../../components/Button";
 
 export default function RecordInventoryTable() {
   const emptyRow = {
@@ -10,15 +11,28 @@ export default function RecordInventoryTable() {
     bottleQty: "",
   };
 
+  /* ---------------- STATE ---------------- */
+
   const [rows, setRows] = useState([{ ...emptyRow }]);
   const [saved, setSaved] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
+
+
+  /* ---------------- HELPERS ---------------- */
+
+  // Allow only numbers for qty fields
+  const formatValue = (key, value) => {
+    if (key === "caseQty" || key === "bottleQty") {
+      return value.replace(/[^0-9]/g, "");
+    }
+    return value;
+  };
 
   /* ---------------- INPUT TABLE ---------------- */
 
   const handleChange = (i, key, value) => {
     const copy = [...rows];
-    copy[i][key] = value;
+    copy[i][key] = formatValue(key, value);
     setRows(copy);
   };
 
@@ -32,9 +46,8 @@ export default function RecordInventoryTable() {
       Object.values(r).every((v) => v !== "")
     );
 
-  const save = () => {
+     const handleAddToSaved = () => {
     if (!isValid()) {
-      alert("Fill all fields first");
       return;
     }
 
@@ -46,20 +59,62 @@ export default function RecordInventoryTable() {
 
   const handleSavedChange = (i, key, value) => {
     const copy = [...saved];
-    copy[i][key] = value;
+    copy[i][key] = formatValue(key, value);
     setSaved(copy);
   };
 
-  const handleDeleteSaved = (i) => {
+  const handleDeleteSaved = (i) =>
     setSaved(saved.filter((_, idx) => idx !== i));
+
+  const handleSaveEdit = () => setEditIndex(null);
+
+  /* ---------------- SAVE TO DB ---------------- */
+
+  const formatted = saved.map(row => ({
+  ...row,
+  caseQty: Number(row.caseQty),
+  bottleQty: Number(row.bottleQty),
+}));
+
+  const handleSaveToDatabase = () => {
+    console.log(formatted);
   };
 
-  const handleSaveEdit = () => {
-    setEditIndex(null);
+  /*
+  // REAL DB SAVE
+
+  const handleSave = async () => {
+    try {
+      await fetch("http://localhost:5000/save-inventory", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formatted),
+      });
+
+      alert("Saved to DB ");
+    } catch {
+      alert("DB Save Failed ");
+    }
   };
+  */
+
+  /* ---------------- UI ---------------- */
 
   return (
     <div className="space-y-4">
+
+      {/* Add Row Button Right */}
+      <div className="flex justify-end">
+        <Button
+          variant="neutral"
+          size="md"
+          onClick={addRow}
+        >
+          Add Row
+        </Button>
+      </div>
 
       {/* INPUT TABLE */}
       <Table>
@@ -79,6 +134,11 @@ export default function RecordInventoryTable() {
               {Object.keys(emptyRow).map((key) => (
                 <Table.Cell key={key}>
                   <Table.Input
+                    type={
+                      key === "caseQty" || key === "bottleQty"
+                        ? "number"
+                        : "text"
+                    }
                     value={row[key]}
                     onChange={(e) =>
                       handleChange(i, key, e.target.value)
@@ -88,27 +148,28 @@ export default function RecordInventoryTable() {
               ))}
 
               <Table.Cell>
-                <Table.Button
+                <Button
                   variant="delete"
                   onClick={() => deleteRow(i)}
                 >
                   Delete
-                </Table.Button>
+                </Button>
               </Table.Cell>
             </Table.Row>
           )}
         />
       </Table>
 
-      {/* BUTTONS */}
-      <div className="flex gap-3">
-        <Table.Button size ="md" onClick={addRow}>
-          Add Row
-        </Table.Button>
-
-        <Table.Button size="md" onClick={save}>
-          Save
-        </Table.Button>
+      {/* ADD BUTTON */}
+      <div className="mb-8">
+        <Button
+          variant="primary"
+          size="md"
+          onClick={handleAddToSaved}
+          disabled={!isValid()}
+        >
+          Add
+        </Button>
       </div>
 
       {/* SAVED TABLE */}
@@ -131,6 +192,12 @@ export default function RecordInventoryTable() {
                   <Table.Cell key={key}>
                     {editIndex === i ? (
                       <Table.Input
+                        type={
+                          key === "caseQty" ||
+                          key === "bottleQty"
+                            ? "number"
+                            : "text"
+                        }
                         value={row[key]}
                         onChange={(e) =>
                           handleSavedChange(
@@ -148,32 +215,48 @@ export default function RecordInventoryTable() {
 
                 <Table.Cell>
                   {editIndex === i ? (
-                    <Table.Button
-                      variant="save"
+                    <Button
+                      variant="saveEdit"
+                      size="sm"
                       onClick={handleSaveEdit}
                     >
                       Save Edit
-                    </Table.Button>
+                    </Button>
                   ) : (
-                    <Table.Button
+                    <Button
                       variant="edit"
+                      size="sm"
                       onClick={() => setEditIndex(i)}
                     >
                       Edit
-                    </Table.Button>
+                    </Button>
                   )}
 
-                  <Table.Button
+                  <Button
                     variant="delete"
+                    size="sm"
                     onClick={() => handleDeleteSaved(i)}
                   >
                     Delete
-                  </Table.Button>
+                  </Button>
                 </Table.Cell>
               </Table.Row>
             )}
           />
         </Table>
+      )}
+
+      {/* SAVE TO DB BUTTON */}
+      {saved.length > 0 && (
+        <div>
+          <Button
+            variant="primary"
+            size="md"
+            onClick={handleSaveToDatabase}
+          >
+            Save to Database
+          </Button>
+        </div>
       )}
     </div>
   );

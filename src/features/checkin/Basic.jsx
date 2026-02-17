@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 export default function Basic() {
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { isValid },
   } = useForm({
     mode: "onChange",
@@ -12,23 +14,50 @@ export default function Basic() {
 
   const notListed = watch("notListed");
 
-  const onSubmit = (data) => {
-    console.log("Basic Saved:", data);
-  };
+  /* ---------------- RESET SHOP IF NOT LISTED ---------------- */
+  useEffect(() => {
+    if (notListed) {
+      setValue("shop", ""); // reset to "Select shop"
+    }
+  }, [notListed, setValue]);
 
+
+const onSubmit = () =>{
+console.log("saved")
+}
+
+  /*
+  const onSubmit = async (data) => {
+    try {
+      const res = await fetch("/api/basic", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const msg = await res.text();
+      alert(msg);
+    } catch (err) {
+      console.error(err);
+      alert("Save failed");
+    }
+  };
+*/
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="bg-zinc-900 p-6 rounded border border-zinc-800 w-[420px] space-y-4"
     >
-      {/* Shop */}
+      {/* ---------------- SHOP ---------------- */}
       <div>
-        <label className="text-sm text-zinc-400">
-          Select Shop
-        </label>
+        <label className="text-sm text-zinc-400">Select Shop</label>
 
         <select
-          {...register("shop", { required: true })}
+          {...register("shop", {
+            required: !notListed, // ✅ required only if NOT notListed
+          })}
           className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
         >
           <option value="">Select shop</option>
@@ -37,16 +66,14 @@ export default function Basic() {
         </select>
       </div>
 
-      {/* Not Listed */}
+      {/* ---------------- NOT LISTED ---------------- */}
       <div className="flex items-center gap-2">
-        <label className="text-sm text-zinc-400">
-          Not listed above
-        </label>
+        <label className="text-sm text-zinc-400">Not listed above</label>
 
         <input type="checkbox" {...register("notListed")} />
       </div>
 
-      {/* Conditional Fields */}
+      {/* ---------------- CONDITIONAL FIELDS ---------------- */}
       {notListed && (
         <>
           {/* License Type */}
@@ -88,22 +115,27 @@ export default function Basic() {
             placeholder="Licensee Name"
             {...register("licenseeName", {
               required: true,
-              pattern: /^[A-Za-z\s]+$/,
+              pattern: {
+                value: /^[A-Za-z\s]+$/,
+                message: "Only letters allowed",
+              },
             })}
+            onInput={(e) => {
+              e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, "");
+            }}
             className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
           />
         </>
       )}
 
-      {/* Save Button */}
+      {/* ---------------- SAVE BUTTON ---------------- */}
       <button
         type="submit"
         disabled={!isValid}
         className="
           bg-amber-800
           hover:bg-amber-700
-          disabled:bg-amber-800
-          disabled:opacity-100
+          disabled:opacity-50
           disabled:cursor-not-allowed
           px-4 py-2 rounded text-white w-full
         "
