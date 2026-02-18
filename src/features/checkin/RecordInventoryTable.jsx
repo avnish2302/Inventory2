@@ -80,27 +80,6 @@ export default function RecordInventoryTable() {
     console.log(formatted);
   };
 
-  /*
-  // REAL DB SAVE
-
-  const handleSave = async () => {
-    try {
-      await fetch("http://localhost:5000/save-inventory", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formatted),
-      });
-
-      alert("Saved to DB ");
-    } catch {
-      alert("DB Save Failed ");
-    }
-  };
-  */
-
-  /* ---------------- UI ---------------- */
 
   return (
     <div className="space-y-4">
@@ -161,7 +140,7 @@ export default function RecordInventoryTable() {
       </Table>
 
       {/* ADD BUTTON */}
-      <div className="mb-8">
+      <div className="mb-8 flex justify-center">
         <Button
           variant="primary"
           size="md"
@@ -248,13 +227,13 @@ export default function RecordInventoryTable() {
 
       {/* SAVE TO DB BUTTON */}
       {saved.length > 0 && (
-        <div>
+        <div className="flex justify-center">
           <Button
             variant="primary"
             size="md"
             onClick={handleSaveToDatabase}
           >
-            Save to Database
+            Save
           </Button>
         </div>
       )}

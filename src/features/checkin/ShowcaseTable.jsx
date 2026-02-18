@@ -113,7 +113,7 @@ const handleSaveToDatabase = () => {
       </Table>
 
       {/* BUTTONS */}
-      <div className="flex gap-3">
+      <div className="flex justify-center gap-3">
         <Button variant="primary" size="md" onClick={handleAddToSaved} disabled={!isValid()}>
           Add
         </Button>
@@ -178,13 +178,13 @@ const handleSaveToDatabase = () => {
         </Table>
       )}
       {saved.length > 0 && (
-  <div >
+  <div className="flex justify-center" >
     <Button
       variant="primary"
       size="md"
       onClick={handleSaveToDatabase}
     >
-      Save to Database
+      Save
     </Button>
   </div>
 )}

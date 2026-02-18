@@ -2,12 +2,12 @@ import { useState } from "react";
 import Table from "../../components/Table";
 import Button from "../../components/Button";
 
-export default function MenuTable() {
+export default function AssetAssignmentTable() {
 
   const emptyRow = {
-    category: "",
-    product: "",
-    price: "",
+    brand: "",
+    asset: "",
+    remarks: "",
     image: null,
   };
 
@@ -16,7 +16,7 @@ export default function MenuTable() {
   const [editIndex, setEditIndex] = useState(null);
   const [fileKey, setFileKey] = useState(0);
 
-  /* ---------------- INPUT TABLE LOGIC ---------------- */
+  /* ---------------- INPUT TABLE ---------------- */
 
   const addRow = () =>
     setRows([...rows, { ...emptyRow }]);
@@ -26,23 +26,16 @@ export default function MenuTable() {
 
   const updateRow = (index, key, value) => {
     const copy = [...rows];
-
-    // Only numbers for price
-    if (key === "price") {
-      value = value.replace(/[^0-9.]/g, "");
-    }
-
     copy[index][key] = value;
     setRows(copy);
   };
 
   const isValid = () =>
-    rows.every(
-      (r) =>
-        r.category &&
-        r.product &&
-        r.price &&
-        r.image
+    rows.every(r =>
+      r.brand &&
+      r.asset &&
+      r.remarks &&
+      r.image
     );
 
   const handleAddToSaved = () => {
@@ -51,18 +44,14 @@ export default function MenuTable() {
     setSaved([...saved, ...rows]);
     setRows([{ ...emptyRow }]);
 
-    setFileKey((p) => p + 1);
+    // reset file input
+    setFileKey(p => p + 1);
   };
 
-  /* ---------------- SAVED TABLE LOGIC ---------------- */
+  /* ---------------- SAVED TABLE ---------------- */
 
   const handleSavedChange = (i, key, value) => {
     const copy = [...saved];
-
-    if (key === "price") {
-      value = value.replace(/[^0-9.]/g, "");
-    }
-
     copy[i][key] = value;
     setSaved(copy);
   };
@@ -74,7 +63,7 @@ export default function MenuTable() {
     setEditIndex(null);
 
   const handleSaveToDatabase = () => {
-    console.log(saved);
+    console.log("Saving to DB:", saved);
   };
 
   /* ---------------- UI ---------------- */
@@ -84,7 +73,7 @@ export default function MenuTable() {
 
       {/* Add Row */}
       <div className="flex justify-end">
-        <Button size = "md" variant="neutral" onClick={addRow}>
+        <Button variant="neutral" size="md" onClick={addRow}>
           Add Row
         </Button>
       </div>
@@ -92,9 +81,9 @@ export default function MenuTable() {
       {/* INPUT TABLE */}
       <Table>
         <Table.Header>
-          <Table.Cell>Category</Table.Cell>
-          <Table.Cell>Product</Table.Cell>
-          <Table.Cell>Price</Table.Cell>
+          <Table.Cell>Brand</Table.Cell>
+          <Table.Cell>Asset</Table.Cell>
+          <Table.Cell>Remarks</Table.Cell>
           <Table.Cell>Image</Table.Cell>
           <Table.Cell>Action</Table.Cell>
         </Table.Header>
@@ -106,29 +95,27 @@ export default function MenuTable() {
 
               <Table.Cell>
                 <Table.Input
-                  value={row.category}
-                  onChange={(e) =>
-                    updateRow(i, "category", e.target.value)
+                  value={row.brand}
+                  onChange={e =>
+                    updateRow(i, "brand", e.target.value)
                   }
                 />
               </Table.Cell>
 
               <Table.Cell>
                 <Table.Input
-                  value={row.product}
-                  onChange={(e) =>
-                    updateRow(i, "product", e.target.value)
+                  value={row.asset}
+                  onChange={e =>
+                    updateRow(i, "asset", e.target.value)
                   }
                 />
               </Table.Cell>
 
-              {/* PRICE INPUT */}
               <Table.Cell>
                 <Table.Input
-                  value={row.price}
-                  placeholder="₹"
-                  onChange={(e) =>
-                    updateRow(i, "price", e.target.value)
+                  value={row.remarks}
+                  onChange={e =>
+                    updateRow(i, "remarks", e.target.value)
                   }
                 />
               </Table.Cell>
@@ -137,7 +124,7 @@ export default function MenuTable() {
                 <input
                   key={fileKey}
                   type="file"
-                  onChange={(e) =>
+                  onChange={e =>
                     updateRow(i, "image", e.target.files[0])
                   }
                 />
@@ -157,26 +144,26 @@ export default function MenuTable() {
         />
       </Table>
 
-      {/* Add Button */}
+      {/* Add to Saved */}
       <div className="flex justify-center">
-
       <Button
-      size = "md"
-      variant="primary"
-      onClick={handleAddToSaved}
-      disabled={!isValid()}
-      >
+        size="md"
+        variant="primary"
+        onClick={handleAddToSaved}
+        disabled={!isValid()}
+        >
         Add
       </Button>
-        </div>
+      </div>
+        
 
       {/* SAVED TABLE */}
       {saved.length > 0 && (
         <Table>
           <Table.Header>
-            <Table.Cell>Category</Table.Cell>
-            <Table.Cell>Product</Table.Cell>
-            <Table.Cell>Price</Table.Cell>
+            <Table.Cell>Brand</Table.Cell>
+            <Table.Cell>Asset</Table.Cell>
+            <Table.Cell>Remarks</Table.Cell>
             <Table.Cell>Image</Table.Cell>
             <Table.Cell>Actions</Table.Cell>
           </Table.Header>
@@ -189,52 +176,39 @@ export default function MenuTable() {
                 <Table.Cell>
                   {editIndex === i ? (
                     <Table.Input
-                      value={row.category}
-                      onChange={(e) =>
-                        handleSavedChange(
-                          i,
-                          "category",
-                          e.target.value
-                        )
+                      value={row.brand}
+                      onChange={e =>
+                        handleSavedChange(i, "brand", e.target.value)
                       }
                     />
                   ) : (
-                    row.category
+                    row.brand
                   )}
                 </Table.Cell>
 
                 <Table.Cell>
                   {editIndex === i ? (
                     <Table.Input
-                      value={row.product}
-                      onChange={(e) =>
-                        handleSavedChange(
-                          i,
-                          "product",
-                          e.target.value
-                        )
+                      value={row.asset}
+                      onChange={e =>
+                        handleSavedChange(i, "asset", e.target.value)
                       }
                     />
                   ) : (
-                    row.product
+                    row.asset
                   )}
                 </Table.Cell>
 
-                {/* PRICE */}
                 <Table.Cell>
                   {editIndex === i ? (
                     <Table.Input
-                      value={row.price}
-                      onChange={(e) =>
-                        handleSavedChange(
-                          i,
-                          "price",
-                          e.target.value
-                        )
+                      value={row.remarks}
+                      onChange={e =>
+                        handleSavedChange(i, "remarks", e.target.value)
                       }
                     />
                   ) : (
-                    `₹ ${row.price}`
+                    row.remarks
                   )}
                 </Table.Cell>
 
@@ -276,8 +250,8 @@ export default function MenuTable() {
       {/* SAVE TO DB */}
       {saved.length > 0 && (
         <div className="flex justify-center">
-          <Button size="md" variant="primary" onClick={handleSaveToDatabase}>
-            Save to Database
+          <Button variant="primary" size="md" onClick={handleSaveToDatabase}>
+            Save
           </Button>
         </div>
       )}

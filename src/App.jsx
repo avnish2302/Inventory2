@@ -7,6 +7,7 @@ import PunchIn from "./pages/PunchIn";
 import RoutesPage from "./pages/Routes";
 
 import MainLayout from "./layouts/MainLayout";
+import CheckOut from "./pages/CheckOut";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
             {/*Check-in routes */}
             <Route path="/checkin" element={<Navigate to="/checkin/basic" />} />
             <Route path="/checkin/:tab" element={<CheckIn />} />
+            
+            <Route path="/checkout" element={<Navigate to="/checkout" />} />
+            <Route path="/checkin/:tab" element={<CheckOut />} />
 
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/punchin" element={<PunchIn />} />

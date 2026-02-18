@@ -42,9 +42,6 @@ export default function Own() {
     setSaved([...saved, ...rows]);
     setRows([]); // Reset rows after adding to saved
   };
-  const handleDeleteRow = (i) => {
-    setRows(rows.filter((_, idx) => idx !== i));
-  };
 
   /* ---------------- SAVED ACTIONS ---------------- */
   const handleEdit = (i) => setEditIndex(i);
@@ -63,7 +60,7 @@ export default function Own() {
   };
 
   return (
-    <div className="bg-zinc-900 p-6 rounded border border-zinc-800 space-y-4">
+    <div  className="bg-zinc-900 p-6 rounded border border-zinc-800 space-y-4">
       {/* Shop Category Selection */}
       <p className="text-zinc-400">
         Shop: <span className="text-white">(Shop name here...)</span>
@@ -124,16 +121,10 @@ export default function Own() {
               >
                 Bottles
               </th>
-
-              <th className="border border-zinc-700 py-2 px-3 text-center">
-                Action
-              </th>
-
-              {/* second header */}
             </tr>
             <tr className="bg-zinc-800 text-white">
-              <th className="border border-zinc-700 py-2 px-3">-------</th>
-              <th className="border border-zinc-700 py-2 px-3">-------</th>
+              <th className="border border-zinc-700 py-2 px-3">-</th>
+              <th className="border border-zinc-700 py-2 px-3">-</th>
               <th className="border border-zinc-700 py-2 px-3 text-center">
                 Warm
               </th>
@@ -146,7 +137,6 @@ export default function Own() {
               <th className="border border-zinc-700 py-2 px-3 text-center">
                 Cold
               </th>
-              <th className="border border-zinc-700">-------</th>
             </tr>
           </thead>
           <tbody>
@@ -177,16 +167,6 @@ export default function Own() {
                     />
                   </td>
                 ))}
-                {/* for delete */}
-                <td className="border py-2 px-3 border-zinc-700">
-                  <Button
-                    variant="delete"
-                    size="sm"
-                    onClick={() => handleDeleteRow(i)}
-                  >
-                    Delete
-                  </Button>
-                </td>
               </tr>
             ))}
           </tbody>

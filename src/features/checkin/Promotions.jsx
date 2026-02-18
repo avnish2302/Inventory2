@@ -7,16 +7,15 @@ export default function Promotions() {
     register,
     handleSubmit,
     reset,
-  } = useForm();
+    formState: { isValid },
+  } = useForm({
+    mode: "onChange",
+  });
 
   const onSubmit = (data) => {
     console.log("Saved:", data);
     reset();
   };
-
-  const handleSaveToDatabase = () => {
-    console.log("saved")
-  }
 
   return (
     <form
@@ -44,12 +43,9 @@ export default function Promotions() {
         {...register("party", { required: true })}
       />
 
-      {/* CATEGORY SELECT */}
+      {/* CATEGORY */}
       <div className="flex gap-3 items-center">
-        <label className="text-sm w-32">
-          Category
-        </label>
-
+        <label className="text-sm w-32">Category</label>
         <select
           {...register("category", { required: true })}
           className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
@@ -61,17 +57,11 @@ export default function Promotions() {
         </select>
       </div>
 
-      <Input
-        label="Brand(s)"
-        {...register("brands")}
-      />
+      <Input label="Brand(s)" {...register("brands")} />
 
-      {/* SKU SELECT */}
+      {/* SKU */}
       <div className="flex gap-3 items-center">
-        <label className="text-sm w-32">
-          SKU
-        </label>
-
+        <label className="text-sm w-32">SKU</label>
         <select
           {...register("sku", { required: true })}
           className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
@@ -88,21 +78,19 @@ export default function Promotions() {
       <Input
         label="Scheme / Promotion"
         textarea
-        {...register("scheme")}
+        {...register("scheme", {required: true})}
       />
-      <Button 
-      variant="primary" 
-      size="md"
-      onClick={handleSaveToDatabase}
-      >Save</Button>
-{/*
-      <button
-        type="submit"
-        className="bg-amber-800 px-4 py-2 rounded text-white w-full"
-      >
-        Save
-      </button>
-      */}
+
+      <div className="flex justify-center">
+        <Button
+          type="submit"
+          variant="primary"
+          size="md"
+          disabled={!isValid}
+        >
+          Save
+        </Button>
+      </div>
     </form>
   );
 }

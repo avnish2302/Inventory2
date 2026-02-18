@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import Button from "../../components/Button";
 
 export default function Basic() {
   const {
@@ -21,10 +22,9 @@ export default function Basic() {
     }
   }, [notListed, setValue]);
 
-
-const onSubmit = () =>{
-console.log("saved")
-}
+  const onSubmit = () => {
+    console.log("saved");
+  };
 
   /*
   const onSubmit = async (data) => {
@@ -129,19 +129,11 @@ console.log("saved")
       )}
 
       {/* ---------------- SAVE BUTTON ---------------- */}
-      <button
-        type="submit"
-        disabled={!isValid}
-        className="
-          bg-amber-800
-          hover:bg-amber-700
-          disabled:opacity-50
-          disabled:cursor-not-allowed
-          px-4 py-2 rounded text-white w-full
-        "
-      >
-        Save
-      </button>
+      <div className="flex justify-center">
+        <Button type="submit" variant="primary" size="md" disabled={!isValid}>
+          Save
+        </Button>
+      </div>
     </form>
   );
 }

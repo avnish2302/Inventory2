@@ -30,6 +30,14 @@ export default function Sidebar() {
         >
           Check In
         </NavLink>
+        <NavLink
+          to="/checkout"
+          className={({ isActive }) =>
+            `${baseStyle} ${isActive ? activeStyle : inactiveStyle}`
+          }
+        >
+          Check Out
+        </NavLink>
 
         <NavLink
           to="/inventory"

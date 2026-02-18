@@ -10,7 +10,6 @@ import AssetAssignment from "../features/checkin/AssetAssignment";
 
 export default function CheckIn() {
   const navigate = useNavigate()
-  //const [tab, setTab] = useState("basic");
   const {tab = "basic"} = useParams()
 
   const tabs = [
@@ -19,7 +18,7 @@ export default function CheckIn() {
     { key: "record-inventory", label: "Record Inventory" },
     { key: "showcase", label: "Showcase" },
     { key: "menu", label: "Menu" },
-    { key: "assets", label: "Asset Assignment" },
+    { key: "asset-assignment", label: "Asset Assignment" },
     { key: "promotions", label: "Promotions" },
     { key: "collection", label: "Collection" },
   ];
@@ -39,9 +38,9 @@ export default function CheckIn() {
             key={t.key}
             onClick={() => navigate(`/checkin/${t.key}`)}
             className={`
-              px-3 py-1 rounded
+              px-3 py-1 rounded cursor-pointer
               ${tab === t.key
-                ? "bg-amber-800 text-white"
+                ? "bg-zinc-700 text-white border border-zinc-400"
                 : "bg-zinc-800 hover:bg-zinc-700"}
             `}
           >
@@ -62,7 +61,7 @@ export default function CheckIn() {
 
       {tab === "menu" && <Menu/>}
 
-      {tab === "assets" && <AssetAssignment/>}
+      {tab === "asset-assignment" && <AssetAssignment/>}
 
       {tab === "promotions" && <Promotions/>}
 

@@ -1,93 +1,55 @@
-import { useState } from "react";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
+import { useForm } from "react-hook-form";
 
 export default function Collection() {
-  const [form, setForm] = useState({
-    shop: "",
-    invoice: "",
-    remarks: "",
-    paymentMode: "Cash",
-    amount: "",
-    image: null,
-  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isValid },
+  } = useForm({ mode: "onChange" });
 
+  const onSubmit = (data) => {
+    console.log("FORM DATA:", data);
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
-  
-  const handleImage = (e) =>
-    setForm({ ...form, image: e.target.files[0] });
-  
+    // data.image will be FileList
+    console.log("Image file:", data.image?.[0]);
 
-  const handleSave = (data)=>{
-    console.log(data)
-  }
-  /*
-  const handleSave = async () => {
-    let imageUrl = null;
-
-    if (form.image) {
-      const { data } = await supabase.storage
-        .from("collection-images")
-        .upload(`img-${Date.now()}`, form.image);
-
-      imageUrl = data?.path;
-    }
-
-    const { error } = await supabase
-      .from("checkin_collection")
-      .insert([{ ...form, image: imageUrl }]);
-
-    if (error) alert(error.message);
-    else alert("Saved!");
+    reset();
   };
-*/
-  return (
-    <div className="bg-zinc-900 p-6 rounded-lg w-[420px] space-y-3 border border-zinc-700">
-      <h3 className="text-lg font-semibold text-amber-600">
-        Collection
-      </h3>
 
-      <Input label="Invoice #" name="invoice" onChange={handleChange}/>
-      <Input label="Remarks" name="remarks" onChange={handleChange}/>
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="bg-zinc-900 p-6 rounded-lg w-[420px] space-y-3 border border-zinc-700"
+    >
+      <h3 className="text-lg font-semibold text-amber-600">Collection</h3>
+
+      <Input label="Invoice #" {...register("invoice", { required: true })} />
+      <Input label="Remarks" {...register("remarks", { required: true })} />
 
       <div className="flex justify-between items-center">
         <label>Payment Mode</label>
         <select
-          name="paymentMode"
-          onChange={handleChange}
+          {...register("paymentMode", { required: true })}
           className="bg-zinc-800 border border-zinc-700 px-3 py-1 rounded"
         >
           <option>Cash</option>
-          <option>UPI</option>
-          <option>Card</option>
         </select>
       </div>
 
-      <Input label="Amount" name="amount" type="number" onChange={handleChange}/>
+      <Input label="Amount" type="number" {...register("amount", { required: true })} />
 
       <div className="flex justify-between items-center">
         <label>Image</label>
-        <input type="file" onChange={handleImage}/>
+        <input type="file" {...register("image")} />
       </div>
-
-      <button
-        onClick={handleSave}
-        className="bg-amber-800 px-4 py-2 rounded text-white w-full"
-      >
+<div className="flex justify-center">
+      <Button type="submit" variant="primary" size="md" disabled={!isValid}>
         Save
-      </button>
-    </div>
-  );
-}
-
-function Input({ label, ...props }) {
-  return (
-    <div className="flex justify-between items-center gap-3">
-      <label className="w-32">{label}</label>
-      <input
-        {...props}
-        className="bg-zinc-800 border border-zinc-700 px-3 py-1 rounded w-full"
-      />
-    </div>
+      </Button>
+</div>
+    </form>
   );
 }
