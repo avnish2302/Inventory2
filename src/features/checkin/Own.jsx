@@ -209,28 +209,28 @@ export default function Own() {
       {saved.length > 0 && (
         <>
           <div className="overflow-x-auto mt-20">
-            <table className="w-full border border-zinc-600 border-collapse text-sm">
+            <table className="w-full table-fixed border border-zinc-600 border-collapse text-sm">
               <thead>
                 <tr className="bg-zinc-800 text-white">
-                  <th className="border border-zinc-700 py-2 px-3 text-center">
+                  <th className="w-1/7 border border-zinc-700 py-2 px-3 text-center">
                     Product
                   </th>
-                  <th className="border border-zinc-700 py-2 px-3 text-center">
+                  <th className="w-1/7 border border-zinc-700 py-2 px-3 text-center">
                     Receipt
                   </th>
-                  <th className="border border-zinc-700 py-2 px-3 text-center">
+                  <th className="w-1/7 border border-zinc-700 py-2 px-3 text-center">
                     Cases Warm
                   </th>
-                  <th className="border border-zinc-700 py-2 px-3 text-center">
+                  <th className="w-1/7 border border-zinc-700 py-2 px-3 text-center">
                     Cases Cold
                   </th>
-                  <th className="border border-zinc-700 py-2 px-3 text-center">
+                  <th className="w-1/7 border border-zinc-700 py-2 px-3 text-center">
                     Bottles Warm
                   </th>
-                  <th className="border border-zinc-700 py-2 px-3 text-center">
+                  <th className="w-1/7 border border-zinc-700 py-2 px-3 text-center">
                     Bottles Cold
                   </th>
-                  <th className="border border-zinc-700 py-2 px-3 text-center">
+                  <th className="w-1/7 border border-zinc-700 py-2 px-3 text-center">
                     Actions
                   </th>
                 </tr>
@@ -324,7 +324,7 @@ export default function Own() {
                     </td>
 
                     {/* Actions */}
-                    <td className="border py-2 px-3 border-zinc-700 space-x-2">
+                    <td className="border py-2 px-3 border-zinc-700 space-x-2 w-1/7">
                       {editIndex === i ? (
                         <Button
                           variant="saveEdit"
