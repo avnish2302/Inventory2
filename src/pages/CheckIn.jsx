@@ -1,6 +1,6 @@
 import Basic from "../features/checkin/Basic";
-import Own from "../features/checkin/Own";
-import RecordInventory from "../features/checkin/RecordInventory";
+import RecordInventoryOwn from "../features/checkin/RecordInventoryOwn";
+import RecordInventoryCompetitor from "../features/checkin/RecordInventoryCompetitor";
 import ShowCase from "../features/checkin/ShowCase";
 import Menu from "../features/checkin/Menu"
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,8 +14,8 @@ export default function CheckIn() {
 
   const tabs = [
     { key: "basic", label: "Basic" },
-    { key: "own-inventory", label: "Own Inventory" },
-    { key: "record-inventory", label: "Record Inventory" },
+    { key: "record-inventory-own", label: "Record Inventory Own" },
+    { key: "record-inventory-competitor", label: "Record Inventory Competitor" },
     { key: "showcase", label: "Showcase" },
     { key: "menu", label: "Menu" },
     { key: "asset-assignment", label: "Asset Assignment" },
@@ -53,9 +53,9 @@ export default function CheckIn() {
 
       {tab === "basic" && <Basic />}
 
-      {tab === "own-inventory" && <Own />}
+      {tab === "record-inventory-own" && <RecordInventoryOwn/>}
 
-      {tab === "record-inventory" && <RecordInventory />}
+      {tab === "record-inventory-competitor" && <RecordInventoryCompetitor/>}
 
       {tab === "showcase" && <ShowCase />}
 

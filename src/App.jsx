@@ -12,31 +12,28 @@ import CheckOut from "./pages/CheckOut";
 function App() {
   return (
     <div className="bg-zinc-950 text-zinc-200 min-h-screen">
+        <BrowserRouter>
+          <Routes>
+            {/* Login */}
+            <Route path="/" element={<Login />} />
 
-      <BrowserRouter>
-        <Routes>
+            {/* Layout wrapper */}
+            <Route element={<MainLayout />}>
+              {/*Check-in routes */}
+              <Route
+                path="/checkin"
+                element={<Navigate to="/checkin/basic" />}
+              />
+              <Route path="/checkin/:tab" element={<CheckIn />} />
 
-          {/* Login */}
-          <Route path="/" element={<Login />} />
+              <Route path="/checkout" element={<CheckOut />} />
 
-          {/* Layout wrapper */}
-          <Route element={<MainLayout />}>
-
-            {/*Check-in routes */}
-            <Route path="/checkin" element={<Navigate to="/checkin/basic" />} />
-            <Route path="/checkin/:tab" element={<CheckIn />} />
-            
-            <Route path="/checkout" element={<Navigate to="/checkout" />} />
-            <Route path="/checkin/:tab" element={<CheckOut />} />
-
-            <Route path="/inventory" element={<Inventory />} />
-            <Route path="/punchin" element={<PunchIn />} />
-            <Route path="/routes" element={<RoutesPage />} />
-
-          </Route>
-
-        </Routes>
-      </BrowserRouter>
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/punchin" element={<PunchIn />} />
+              <Route path="/routes" element={<RoutesPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
     </div>
   );
 }

@@ -1,16 +1,7 @@
 export default function Table({ children }) {
   return (
     <div className="overflow-x-auto">
-      <table
-        className="
-          w-full
-          border border-zinc-700
-          border-collapse
-          text-sm
-          table-fixed
-          bg-zinc-900
-        "
-      >
+      <table className="w-full table-fixed border border-zinc-700 border-collapse text-sm bg-zinc-900">
         {children}
       </table>
     </div>
@@ -27,7 +18,6 @@ function Header({ children }) {
   );
 }
 
-
 /* ---------- BODY ---------- */
 
 function Body({ data, render }) {
@@ -38,34 +28,26 @@ function Body({ data, render }) {
 
 function Row({ children }) {
   return (
-    <tr className="
+    <tr
+      className="
       text-center
       bg-zinc-900
-    ">
+    "
+    >
       {children}
     </tr>
   );
 }
 
-
 /* ---------- CELL ---------- */
 
 function Cell({ children }) {
   return (
-    <td
-      className="      
-        border border-zinc-700
-        h-12
-        px-2
-      "
-    >
-      <div className="flex items-center justify-center gap-2 h-full">
-        {children}
-      </div>
+    <td className="border border-zinc-700 px-3 py-2 text-center align-middle break-all">
+      {children}
     </td>
   );
 }
-
 
 /* ---------- INPUT (Styled) ---------- */
 
@@ -86,7 +68,6 @@ function Input(props) {
     />
   );
 }
-
 
 /* ---------- EXPORT ---------- */
 

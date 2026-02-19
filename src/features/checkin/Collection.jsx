@@ -1,8 +1,12 @@
+import { useState } from "react";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { useForm } from "react-hook-form";
+import ShopName from "../../components/ShopName";
+
 
 export default function Collection() {
+  const [selectedFile, setSelectedFile] = useState(null);
   const {
     register,
     handleSubmit,
@@ -10,53 +14,109 @@ export default function Collection() {
     formState: { isValid },
   } = useForm({ mode: "onChange" });
 
-  const onSubmit = (data) => {
-    console.log("FORM DATA:", data);
-
-    // data.image will be FileList
-    console.log("Image file:", data.image?.[0]);
+  const onSubmit = () => {
+     reset();
 
     reset();
   };
 
   return (
-    <div className="flex justify-center items-center">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-zinc-900 p-6 rounded-lg w-full max-w-2xl
- space-y-3 border border-zinc-700"
-      >
-        <h3 className="text-lg font-semibold text-amber-600">Collection</h3>
+    <div>
+      <ShopName />
+      <div className="flex justify-center items-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-zinc-900 p-6 rounded-lg w-full max-w-2xl space-y-5 border border-zinc-700"
+        >
+          <h3 className="text-lg font-semibold text-amber-600 mb-2">
+            Collection
+          </h3>
 
-        <Input label="Invoice #" {...register("invoice", { required: true })} />
-        <Input label="Remarks" {...register("remarks", { required: true })} />
+          {/* Invoice */}
+          <div className="grid grid-cols-[150px_1fr] items-center gap-4">
+            <label className="text-zinc-300">Invoice #</label>
+            <input
+              {...register("invoice", { required: true })}
+              className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
+            />
+          </div>
 
-        <div className="flex justify-between items-center">
-          <label>Payment Mode</label>
-          <select
-            {...register("paymentMode", { required: true })}
-            className="bg-zinc-800 border border-zinc-700 px-3 py-1 rounded"
-          >
-            <option>Cash</option>
-          </select>
-        </div>
+          {/* Remarks */}
+          <div className="grid grid-cols-[150px_1fr] items-center gap-4">
+            <label className="text-zinc-300">Remarks</label>
+            <input
+              {...register("remarks", { required: true })}
+              className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
+            />
+          </div>
 
-        <Input
-          label="Amount"
-          type="number"
-          {...register("amount", { required: true })}
-        />
+          {/* Payment Mode */}
+          <div className="grid grid-cols-[150px_1fr] items-center gap-4">
+            <label className="text-zinc-300">Payment Mode</label>
+            <select
+              {...register("paymentMode", { required: true })}
+              className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
+            >
+              <option>Cash</option>
+            </select>
+          </div>
 
-        <div className="flex justify-between items-center">
-          <label>Image</label>
-          <input type="file" {...register("image")} />
-        </div>
-        <div className="flex justify-center mt-4">
-          <Button type="submit" variant="primary" size="md" disabled={!isValid}>
-            Save
-          </Button>
-        </div>
-      </form>
+          {/* Amount */}
+          <div className="grid grid-cols-[150px_1fr] items-center gap-4">
+            <label className="text-zinc-300">Amount</label>
+            <input
+              type="number"
+              {...register("amount", { required: true })}
+              className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
+            />
+          </div>
+
+          {/* Image */}
+          <div className="grid grid-cols-[150px_1fr] items-center gap-4">
+            <label className="text-zinc-300">Image</label>
+
+            {!selectedFile ? (
+              <label className="cursor-pointer bg-zinc-800 px-4 py-2 rounded text-sm hover:bg-zinc-700 w-fit">
+                Choose File
+                <input
+                  type="file"
+                  className="hidden"
+                  {...register("image")}
+                  onChange={(e) => setSelectedFile(e.target.files[0])}
+                />
+              </label>
+            ) : (
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-zinc-400 break-all max-w-md">
+                  {selectedFile.name}
+                </span>
+
+                <label className="cursor-pointer text-amber-600 text-sm hover:underline">
+                  Choose Another
+                  <input
+                    type="file"
+                    className="hidden"
+                    {...register("image")}
+                    onChange={(e) => setSelectedFile(e.target.files[0])}
+                  />
+                </label>
+              </div>
+            )}
+          </div>
+
+          {/* Save Button */}
+          <div className="flex justify-center pt-4">
+            <Button
+              type="submit"
+              variant="primary"
+              size="md"
+              disabled={!isValid}
+            >
+              Save
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

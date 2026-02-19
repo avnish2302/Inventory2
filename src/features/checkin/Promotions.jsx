@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import ShopName from "../../components/ShopName";
 
 export default function Promotions() {
   const {
@@ -18,6 +19,7 @@ export default function Promotions() {
   };
 
   return (
+    <div><ShopName/>
     <div className="flex justify-center items-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -50,7 +52,7 @@ export default function Promotions() {
             <option value="">Select Category</option>
             <option>Beer</option>
             <option>Vodka</option>
-            <option>Rum[DD]</option>
+            <option>Rum</option>
           </select>
         </div>
 
@@ -84,6 +86,7 @@ export default function Promotions() {
           </Button>
         </div>
       </form>
+    </div>
     </div>
   );
 }
