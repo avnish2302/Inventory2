@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
 import Button from "../../components/Button";
 import ShopName from "../../components/ShopName";
+import Card from "../../components/Card";
+import styled from "styled-components";
 
 export default function Basic() {
   const {
@@ -21,61 +22,41 @@ export default function Basic() {
 
   return (
     <div>
-      <ShopName/>
-
-      <div className="flex justify-center">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="bg-zinc-900 p-6 rounded border border-zinc-800 w-[420px] space-y-4"
-        >
+      <ShopName className="mb-3"/>
+      <Card width="100rem">
+        <Form onSubmit={handleSubmit(onSubmit)}>
           {/* ---------------- NOT LISTED ---------------- */}
-          <div className="flex items-center gap-2">
-            <label className="text-sm text-zinc-400">
-              Not listed above
-            </label>
-
+          <CheckboxWrapper>
+            <Label>Not listed above</Label>
             <input type="checkbox" {...register("notListed")} />
-          </div>
+          </CheckboxWrapper>
 
           {/* ---------------- CONDITIONAL FIELDS ---------------- */}
           {notListed && (
             <>
-              {/* License Type */}
-              <select
-                {...register("licenseType", { required: true })}
-                className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
-              >
+              <Select {...register("licenseType", { required: true })}>
                 <option value="">License Type</option>
                 <option>Outlet</option>
                 <option>Wholesale (L1)</option>
                 <option>Bond</option>
                 <option>Other</option>
-              </select>
+              </Select>
 
-              {/* Channel */}
-              <select
-                {...register("channel", { required: true })}
-                className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
-              >
+              <Select {...register("channel", { required: true })}>
                 <option value="">Channel</option>
                 <option>On-Trade</option>
                 <option>Off-Trade</option>
                 <option>Others</option>
-              </select>
+              </Select>
 
-              {/* Area */}
-              <select
-                {...register("area", { required: true })}
-                className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
-              >
+              <Select {...register("area", { required: true })}>
                 <option value="">Area</option>
                 <option>North</option>
                 <option>District</option>
                 <option>Cluster</option>
-              </select>
+              </Select>
 
-              {/* Licensee Name */}
-              <input
+              <Input
                 placeholder="Licensee Name"
                 {...register("licenseeName", {
                   required: true,
@@ -87,24 +68,57 @@ export default function Basic() {
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, "");
                 }}
-                className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
               />
             </>
           )}
 
           {/* ---------------- SAVE BUTTON ---------------- */}
-          <div className="flex justify-center">
-            <Button
-              type="submit"
-              variant="primary"
-              size="md"
-              disabled={!isValid}
-            >
+          <ButtonWrapper>
+            <Button type="submit" variant="primary" size="md" disabled={!isValid}>
               Save
             </Button>
-          </div>
-        </form>
-      </div>
+          </ButtonWrapper>
+        </Form>
+      </Card>
     </div>
   );
 }
+
+/* Styled Components */
+
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+`;
+
+const CheckboxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const Label = styled.label`
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+`;
+
+const Select = styled.select`
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+`;
+
+const Input = styled.input`
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;

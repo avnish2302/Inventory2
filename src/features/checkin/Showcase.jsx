@@ -1,48 +1,73 @@
+import styled from "styled-components";
 import ShopName from "../../components/ShopName";
 import Button from "../../components/Button";
+import Card from "../../components/Card";
 import { useShowcase } from "../../hooks/useShowcase";
 import ShowcaseTable from "./ShowcaseTable";
 import ShowcaseAddedTable from "./ShowcaseAddedTable";
+import AddRowButton from "../../components/AddRowButton";
 
 export default function Showcase() {
   const showcase = useShowcase();
 
   return (
-    <div className="space-y-8">
+    <Wrapper>
       <ShopName />
+      <AddRowButton onClick={showcase.addRow} />
 
-      {/* INPUT SECTION */}
-      <div className="bg-zinc-900 p-6 rounded-lg space-y-6">
-        <ShowcaseTable showcase={showcase} />
+      <Card width="100rem">
+        <Section>
+          <ShowcaseTable showcase={showcase} />
 
-        <div className="flex justify-center">
-          <Button
-            variant="primary"
-            size="md"
-            onClick={showcase.handleAdd}
-            disabled={!showcase.isValid()}
-          >
-            Add
-          </Button>
-        </div>
-      </div>
-
-      {/* SAVED SECTION */}
-      {showcase.saved.length > 0 && (
-        <div className="bg-zinc-900 p-6 rounded-lg space-y-6">
-          <ShowcaseAddedTable showcase={showcase} />
-
-          <div className="flex justify-center">
+          <Center>
             <Button
-              variant="primary"
+              variation="primary"
               size="md"
-              onClick={showcase.handleSaveToDatabase}
+              onClick={showcase.handleAdd}
+              disabled={!showcase.isValid()}
             >
-              Save
+              Add
             </Button>
-          </div>
-        </div>
+          </Center>
+        </Section>
+      </Card>
+
+      {showcase.saved.length > 0 && (
+        <Card width="100rem">
+          <Section>
+            <ShowcaseAddedTable showcase={showcase} />
+
+            <Center>
+              <Button
+                variation="primary"
+                size="md"
+                onClick={showcase.handleSaveToDatabase}
+              >
+                Save
+              </Button>
+            </Center>
+          </Section>
+        </Card>
       )}
-    </div>
+    </Wrapper>
   );
 }
+
+/* =============================== */
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+`;
+
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+`;
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+`;

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import styled from "styled-components";
 import Button from "../components/Button";
+import Card from "../components/Card";
 
 export default function PunchIn() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -22,101 +24,187 @@ export default function PunchIn() {
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-amber-700 mb-4">Punch In</h2>
-      <div className="flex justify-center">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="bg-zinc-900 p-6 rounded border border-zinc-800 w-96 space-y-4"
-        >
-          {/* Own Vehicle */}
-          <div>
-            <label className="text-sm text-zinc-400">Own Vehicle</label>
+      <Card width="42rem">
+        <Title>Punch In</Title>
 
-            <select
-              {...register("ownVehicle", { required: true })}
-              className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
-            >
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          {/* Own Vehicle */}
+          <FormGroup>
+            <Label>Own Vehicle</Label>
+            <Select {...register("ownVehicle", { required: true })}>
               <option value="">Select</option>
               <option value="no">No</option>
               <option value="yes">Yes</option>
-            </select>
-          </div>
+            </Select>
+          </FormGroup>
 
           {/* Vehicle Type */}
           {ownVehicle === "yes" && (
-            <div>
-              <label className="text-sm text-zinc-400">Vehicle Type</label>
-
-              <select
-                {...register("vehicleType", { required: true })}
-                className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
-              >
+            <FormGroup>
+              <Label>Vehicle Type</Label>
+              <Select {...register("vehicleType", { required: true })}>
                 <option value="">Select</option>
                 <option>Bike</option>
                 <option>Car</option>
-              </select>
-            </div>
+              </Select>
+            </FormGroup>
           )}
 
           {/* Odometer */}
-          <div>
-            <label className="text-sm text-zinc-400">
-              Odometer Reading (KM)
-            </label>
-
-            <input
+          <FormGroup>
+            <Label>Odometer Reading (KM)</Label>
+            <Input
               type="number"
               {...register("odometer", { required: true })}
-              className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
             />
-          </div>
+          </FormGroup>
 
-          {/* Upload Image (UI Only — No Validation) */}
-          <div className="flex flex-col gap-2">
-            <label className="text-sm text-zinc-400">Upload image</label>
+          {/* Upload Image */}
+          <FormGroup>
+            <Label>Upload Image</Label>
 
             {!selectedFile ? (
-              <label className="cursor-pointer bg-zinc-700 px-3 py-2 rounded text-sm w-fit hover:bg-zinc-600">
+              <FileButton>
                 Choose File
-                <input
+                <HiddenFileInput
                   type="file"
-                  className="hidden"
                   onChange={(e) => setSelectedFile(e.target.files[0])}
                 />
-              </label>
+              </FileButton>
             ) : (
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-zinc-400 break-all">
-                  {selectedFile.name}
-                </span>
+              <FileInfo>
+                <FileName>{selectedFile.name}</FileName>
 
-                <label className="cursor-pointer text-amber-600 text-xs hover:underline">
-                  Change
-                  <input
-                    type="file"
-                    className="hidden"
-                    onChange={(e) => setSelectedFile(e.target.files[0])}
-                  />
-                </label>
+                <FileActions>
+                  <SmallLink>
+                    Change
+                    <HiddenFileInput
+                      type="file"
+                      onChange={(e) =>
+                        setSelectedFile(e.target.files[0])
+                      }
+                    />
+                  </SmallLink>
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedFile(null)}
-                  className="text-red-500 text-xs hover:underline"
-                >
-                  Remove
-                </button>
-              </div>
+                  <SmallDanger
+                    type="button"
+                    onClick={() => setSelectedFile(null)}
+                  >
+                    Remove
+                  </SmallDanger>
+                </FileActions>
+              </FileInfo>
             )}
-          </div>
+          </FormGroup>
 
-          {/* Submit */}
-          <Button type="submit" variant="primary" size="md" disabled={!isValid}>
+          <Button
+            type="submit"
+            variation="primary"
+            size="md"
+            disabled={!isValid}
+          >
             Punch In
           </Button>
-        </form>
-      </div>
-    </div>
+        </Form>
+      </Card>
   );
 }
+
+/* ===============================
+   Styled Components
+================================ */
+
+
+const Title = styled.h2`
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-brown-700);
+  margin-bottom: 2rem;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+`;
+
+const Label = styled.label`
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+`;
+
+const Input = styled.input`
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+`;
+
+const Select = styled.select`
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+`;
+
+const FileButton = styled.label`
+  cursor: pointer;
+  background-color: var(--color-grey-200);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.3rem;
+  width: fit-content;
+
+  &:hover {
+    background-color: var(--color-grey-300);
+  }
+`;
+
+const HiddenFileInput = styled.input`
+  display: none;
+`;
+
+const FileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+`;
+
+const FileName = styled.span`
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  word-break: break-all;
+`;
+
+const FileActions = styled.div`
+  display: flex;
+  gap: 1.2rem;
+`;
+
+const SmallLink = styled.label`
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--color-brown-600);
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const SmallDanger = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #dc2626;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;

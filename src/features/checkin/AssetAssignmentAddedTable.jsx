@@ -21,11 +21,7 @@ export default function AssetAssignmentAddedTable({ asset }) {
                 <Table.Input
                   value={row.brand}
                   onChange={(e) =>
-                    asset.handleSavedChange(
-                      i,
-                      "brand",
-                      e.target.value
-                    )
+                    asset.handleSavedChange(i, "brand", e.target.value)
                   }
                 />
               ) : (
@@ -38,11 +34,7 @@ export default function AssetAssignmentAddedTable({ asset }) {
                 <Table.Input
                   value={row.asset}
                   onChange={(e) =>
-                    asset.handleSavedChange(
-                      i,
-                      "asset",
-                      e.target.value
-                    )
+                    asset.handleSavedChange(i, "asset", e.target.value)
                   }
                 />
               ) : (
@@ -55,11 +47,7 @@ export default function AssetAssignmentAddedTable({ asset }) {
                 <Table.Input
                   value={row.remarks}
                   onChange={(e) =>
-                    asset.handleSavedChange(
-                      i,
-                      "remarks",
-                      e.target.value
-                    )
+                    asset.handleSavedChange(i, "remarks", e.target.value)
                   }
                 />
               ) : (
@@ -67,33 +55,20 @@ export default function AssetAssignmentAddedTable({ asset }) {
               )}
             </Table.Cell>
 
-            <Table.Cell>
-              {row.image?.name || "Image"}
-            </Table.Cell>
+            <Table.Cell>{row.image?.name || "Image"}</Table.Cell>
 
-            <Table.Cell className="flex gap-2">
+            <Table.Cell>
               {asset.editIndex === i ? (
-                <Button
-                  variant="saveEdit"
-                  onClick={asset.handleSaveEdit}
-                >
+                <Button variation="saveEdit" onClick={asset.handleSaveEdit}>
                   Save Edit
                 </Button>
               ) : (
-                <Button
-                  variant="edit"
-                  onClick={() => asset.setEditIndex(i)}
-                >
+                <Button variation="edit" onClick={() => asset.setEditIndex(i)}>
                   Edit
                 </Button>
               )}
 
-              <Button
-                variant="delete"
-                onClick={() =>
-                  asset.handleDeleteSaved(i)
-                }
-              >
+              <Button variation="delete" onClick={() => asset.handleDeleteSaved(i)}>
                 Delete
               </Button>
             </Table.Cell>

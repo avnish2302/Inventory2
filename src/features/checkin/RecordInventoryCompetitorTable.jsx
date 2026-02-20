@@ -3,7 +3,7 @@ import Table from "../../components/Table";
 
 
 export default function RecordInventoryCompetitorTable({
-  inventory,
+  inventoryCompetitor,
 }) {
   const {
     rows,
@@ -11,20 +11,10 @@ export default function RecordInventoryCompetitorTable({
     handleChange,
     addRow,
     deleteRow,
-  } = inventory;
+  } = inventoryCompetitor;
 
   return (
     <>
-      <div className="flex justify-end">
-        <Button
-          variant="neutral"
-          size="md"
-          onClick={addRow}
-        >
-          Add Row
-        </Button>
-      </div>
-
       <Table>
         <Table.Header>
           <Table.Cell>Category</Table.Cell>

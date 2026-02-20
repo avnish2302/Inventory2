@@ -1,19 +1,9 @@
-import Table from "../../components/Table";
+import Table from "../../components/Table"; // Import the Table component which now has all the styling for file input
 import Button from "../../components/Button";
 
 export default function ShowcaseTable({ showcase }) {
   return (
     <>
-      <div className="flex justify-end">
-        <Button
-          variant="neutral"
-          size="md"
-          onClick={showcase.addRow}
-        >
-          Add Row
-        </Button>
-      </div>
-
       <Table>
         <Table.Header>
           <Table.Cell>Category</Table.Cell>
@@ -46,42 +36,35 @@ export default function ShowcaseTable({ showcase }) {
 
               <Table.Cell>
                 {!row.image ? (
-                  <label className="cursor-pointer bg-zinc-700 px-3 py-1 rounded text-sm">
+                  <Table.FileButton>
                     Choose File
-                    <input
+                    <Table.HiddenInput
                       key={showcase.fileKey}
                       type="file"
-                      className="hidden"
                       onChange={(e) =>
                         showcase.updateRow(i, "image", e.target.files[0])
                       }
                     />
-                  </label>
-                 ) : (
-                  <div className="flex flex-col items-center gap-1">
-                    <span className="text-xs break-all">
-                      {row.image.name}
-                    </span>
+                  </Table.FileButton>
+                ) : (
+                  <Table.FileInfo>
+                    <Table.FileName>{row.image.name}</Table.FileName>
 
-                    <label className="text-amber-600 text-xs cursor-pointer">
+                    <Table.ChangeLabel>
                       Change
-                      <input
+                      <Table.HiddenInput
                         type="file"
-                        className="hidden"
                         onChange={(e) =>
                           showcase.updateRow(i, "image", e.target.files[0])
                         }
                       />
-                    </label>
-                  </div>
+                    </Table.ChangeLabel>
+                  </Table.FileInfo>
                 )}
               </Table.Cell>
 
               <Table.Cell>
-                <Button
-                  variant="delete"
-                  onClick={() => showcase.deleteRow(i)}
-                >
+                <Button variation="delete" onClick={() => showcase.deleteRow(i)}>
                   Delete
                 </Button>
               </Table.Cell>

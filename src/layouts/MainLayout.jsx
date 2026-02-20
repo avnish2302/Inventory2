@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import styled from "styled-components";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 
@@ -7,19 +8,46 @@ export default function MainLayout() {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="h-screen flex bg-zinc-950 text-zinc-200 overflow-hidden">
-
+    <Layout>
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
 
-      <div className="flex-1 flex flex-col h-full transition-all duration-300">
-
+      <ContentWrapper>
         <Navbar />
-
-        <div className="flex-1 overflow-y-auto p-6">
+        <MainContent>
           <Outlet />
-        </div>
-
-      </div>
-    </div>
+        </MainContent>
+      </ContentWrapper>
+    </Layout>
   );
 }
+
+/* ===============================
+   Styled Components
+================================ */
+
+const Layout = styled.div`
+  height: 100vh;
+  display: flex;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  overflow: hidden;
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.3s ease;
+`;
+
+const MainContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 2.4rem;
+
+   /* 👇 Added for global centering */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+`;

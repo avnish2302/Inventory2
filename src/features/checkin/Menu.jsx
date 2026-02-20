@@ -1,48 +1,75 @@
+import styled from "styled-components";
 import ShopName from "../../components/ShopName";
 import Button from "../../components/Button";
+import Card from "../../components/Card";
 import { useMenu } from "../../hooks/useMenu";
 import MenuTable from "./MenuTable";
 import MenuAddedTable from "./MenuAddedTable";
+import AddRowButton from "../../components/AddRowButton";
 
 export default function Menu() {
   const menu = useMenu();
 
   return (
-    <div className="space-y-8">
+    <Wrapper>
       <ShopName />
+      <AddRowButton onClick={menu.addRow} />
 
-      {/* INPUT SECTION */}
-      <div className="bg-zinc-900 p-6 rounded-lg space-y-6">
-        <MenuTable menu={menu} />
+      <Card width="100rem">
+        <Section>
+          <MenuTable menu={menu} />
 
-        <div className="flex justify-center">
-          <Button
-            size="md"
-            variant="primary"
-            onClick={menu.handleAdd}
-            disabled={!menu.isValid()}
-          >
-            Add
-          </Button>
-        </div>
-      </div>
-
-      {/* SAVED SECTION */}
-      {menu.saved.length > 0 && (
-        <div className="bg-zinc-900 p-6 rounded-lg space-y-6">
-          <MenuAddedTable menu={menu} />
-
-          <div className="flex justify-center">
+          <Center>
             <Button
+              variation="primary"
               size="md"
-              variant="primary"
-              onClick={menu.handleSaveToDatabase}
+              onClick={menu.handleAdd}
+              disabled={!menu.isValid()}
             >
-              Save
+              Add
             </Button>
-          </div>
-        </div>
+          </Center>
+        </Section>
+      </Card>
+
+      {menu.saved.length > 0 && (
+        <Card width="100rem">
+          <Section>
+            <MenuAddedTable menu={menu} />
+
+            <Center>
+              <Button
+                variation="primary"
+                size="md"
+                onClick={menu.handleSaveToDatabase}
+              >
+                Save
+              </Button>
+            </Center>
+          </Section>
+        </Card>
       )}
-    </div>
+    </Wrapper>
   );
 }
+
+/* =============================== */
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+`;
+
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+`;
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+

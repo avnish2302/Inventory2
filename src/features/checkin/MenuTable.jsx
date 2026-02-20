@@ -1,15 +1,10 @@
-import Table from "../../components/Table";
+import styled from "styled-components";
+import Table from "../../components/Table"; // Importing the existing Table component
 import Button from "../../components/Button";
 
 export default function MenuTable({ menu }) {
   return (
     <>
-      <div className="flex justify-end">
-        <Button size="md" variant="neutral" onClick={menu.addRow}>
-          Add Row
-        </Button>
-      </div>
-
       <Table>
         <Table.Header>
           <Table.Cell>Category</Table.Cell>
@@ -26,9 +21,7 @@ export default function MenuTable({ menu }) {
               <Table.Cell>
                 <Table.Input
                   value={row.category}
-                  onChange={(e) =>
-                    menu.updateRow(i, "category", e.target.value)
-                  }
+                  onChange={(e) => menu.updateRow(i, "category", e.target.value)}
                 />
               </Table.Cell>
 
@@ -48,41 +41,37 @@ export default function MenuTable({ menu }) {
               </Table.Cell>
 
               <Table.Cell>
-                <div className="flex flex-col items-center gap-1">
+                <FileUploadWrapper>
                   {!row.image ? (
-                    <label className="cursor-pointer bg-zinc-800 px-3 py-1 rounded text-sm hover:bg-zinc-700">
+                    <FileButton>
                       Choose File
-                      <input
+                      <Table.HiddenInput
                         type="file"
-                        className="hidden"
                         onChange={(e) =>
                           menu.updateRow(i, "image", e.target.files[0])
                         }
                       />
-                    </label>
+                    </FileButton>
                   ) : (
-                    <div className="flex flex-col items-center gap-1">
-                      <span className="text-xs break-all max-w-[120px]">
-                        {row.image.name}
-                      </span>
+                    <FileInfo>
+                      <FileName>{row.image.name}</FileName>
 
-                      <label className="cursor-pointer text-amber-600 text-xs hover:underline">
+                      <Table.ChangeLabel>
                         Change
-                        <input
+                        <Table.HiddenInput
                           type="file"
-                          className="hidden"
                           onChange={(e) =>
                             menu.updateRow(i, "image", e.target.files[0])
                           }
                         />
-                      </label>
-                    </div>
+                      </Table.ChangeLabel>
+                    </FileInfo>
                   )}
-                </div>
+                </FileUploadWrapper>
               </Table.Cell>
 
               <Table.Cell>
-                <Button variant="delete" onClick={() => menu.deleteRow(i)}>
+                <Button variation="delete" onClick={() => menu.deleteRow(i)}>
                   Delete
                 </Button>
               </Table.Cell>
@@ -93,3 +82,35 @@ export default function MenuTable({ menu }) {
     </>
   );
 }
+
+/* Styled Components for File Upload */
+const FileUploadWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+`;
+
+const FileButton = styled.label`
+  cursor: pointer;
+  background-color: var(--color-grey-200);
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.2rem;
+
+  &:hover {
+    background-color: var(--color-grey-300);
+  }
+`;
+
+const FileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+`;
+
+const FileName = styled.span`
+  font-size: 1.2rem;
+  word-break: break-word;
+`;

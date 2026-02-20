@@ -1,3 +1,4 @@
+
 import Table from "../../components/Table";
 import Button from "../../components/Button";
 
@@ -21,11 +22,7 @@ export default function MenuAddedTable({ menu }) {
                 <Table.Input
                   value={row.category}
                   onChange={(e) =>
-                    menu.handleSavedChange(
-                      i,
-                      "category",
-                      e.target.value
-                    )
+                    menu.handleSavedChange(i, "category", e.target.value)
                   }
                 />
               ) : (
@@ -38,11 +35,7 @@ export default function MenuAddedTable({ menu }) {
                 <Table.Input
                   value={row.product}
                   onChange={(e) =>
-                    menu.handleSavedChange(
-                      i,
-                      "product",
-                      e.target.value
-                    )
+                    menu.handleSavedChange(i, "product", e.target.value)
                   }
                 />
               ) : (
@@ -55,11 +48,7 @@ export default function MenuAddedTable({ menu }) {
                 <Table.Input
                   value={row.price}
                   onChange={(e) =>
-                    menu.handleSavedChange(
-                      i,
-                      "price",
-                      e.target.value
-                    )
+                    menu.handleSavedChange(i, "price", e.target.value)
                   }
                 />
               ) : (
@@ -71,27 +60,18 @@ export default function MenuAddedTable({ menu }) {
               {row.image?.name || "Image"}
             </Table.Cell>
 
-            <Table.Cell className="flex gap-2">
+            <Table.Cell>
               {menu.editIndex === i ? (
-                <Button
-                  variant="saveEdit"
-                  onClick={menu.handleSaveEdit}
-                >
+                <Button variation="saveEdit" onClick={menu.handleSaveEdit}>
                   Save Edit
                 </Button>
               ) : (
-                <Button
-                  variant="edit"
-                  onClick={() => menu.setEditIndex(i)}
-                >
+                <Button variation="edit" onClick={() => menu.setEditIndex(i)}>
                   Edit
                 </Button>
               )}
 
-              <Button
-                variant="delete"
-                onClick={() => menu.handleDeleteSaved(i)}
-              >
+              <Button variation="delete" onClick={() => menu.handleDeleteSaved(i)}>
                 Delete
               </Button>
             </Table.Cell>

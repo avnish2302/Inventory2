@@ -1,16 +1,18 @@
+import styled from "styled-components";
+import { useNavigate, useParams } from "react-router-dom";
+
 import Basic from "../features/checkin/Basic";
 import RecordInventoryOwn from "../features/checkin/RecordInventoryOwn";
 import RecordInventoryCompetitor from "../features/checkin/RecordInventoryCompetitor";
 import ShowCase from "../features/checkin/ShowCase";
-import Menu from "../features/checkin/Menu"
-import { useNavigate, useParams } from "react-router-dom";
+import Menu from "../features/checkin/Menu";
 import Promotions from "../features/checkin/Promotions";
 import Collection from "../features/checkin/Collection";
 import AssetAssignment from "../features/checkin/AssetAssignment";
 
 export default function CheckIn() {
-  const navigate = useNavigate()
-  const {tab = "basic"} = useParams()
+  const navigate = useNavigate();
+  const { tab = "basic" } = useParams();
 
   const tabs = [
     { key: "basic", label: "Basic" },
@@ -24,49 +26,76 @@ export default function CheckIn() {
   ];
 
   return (
-    <div className="space-y-6">
+    <Wrapper>
+      <Title>Check-In</Title>
 
-      {/* PAGE TITLE */}
-      <h2 className="text-2xl font-bold text-amber-700">
-        Check-In
-      </h2>
-
-      {/* TABS */}
-      <div className="flex gap-2 flex-wrap">
-        {tabs.map(t => (
-          <button
+      <Tabs>
+        {tabs.map((t) => (
+          <TabButton
             key={t.key}
+            $active={tab === t.key}
+             data-active={tab === t.key}
             onClick={() => navigate(`/checkin/${t.key}`)}
-            className={`
-              px-3 py-1 rounded cursor-pointer
-              ${tab === t.key
-                ? "bg-zinc-700 text-white border border-zinc-400"
-                : "bg-zinc-800 hover:bg-zinc-700"}
-            `}
           >
             {t.label}
-          </button>
+          </TabButton>
         ))}
-      </div>
-
-      {/* TAB CONTENT */}
+      </Tabs>
 
       {tab === "basic" && <Basic />}
-
-      {tab === "record-inventory-own" && <RecordInventoryOwn/>}
-
-      {tab === "record-inventory-competitor" && <RecordInventoryCompetitor/>}
-
+      {tab === "record-inventory-own" && <RecordInventoryOwn />}
+      {tab === "record-inventory-competitor" && <RecordInventoryCompetitor />}
       {tab === "showcase" && <ShowCase />}
-
-      {tab === "menu" && <Menu/>}
-
-      {tab === "asset-assignment" && <AssetAssignment/>}
-
-      {tab === "promotions" && <Promotions/>}
-
-      {tab === "collection" && <Collection/>}
-
-    </div>
+      {tab === "menu" && <Menu />}
+      {tab === "asset-assignment" && <AssetAssignment />}
+      {tab === "promotions" && <Promotions />}
+      {tab === "collection" && <Collection />}
+    </Wrapper>
   );
 }
+
+/* ===============================
+   Styled Components
+================================ */
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+`;
+
+const Title = styled.h2`
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-brown-700);
+`;
+
+const Tabs = styled.div`
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+`;
+
+const TabButton = styled.button`
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1.3rem;
+  transition: all 0.2s ease;
+
+  background-color: ${({ $active }) =>
+    $active ? "var(--color-brown-100)" : "var(--color-grey-200)"};
+
+  color: ${({ $active }) =>
+    $active ? "var(--color-brown-700)" : "var(--text-primary)"};
+
+${({ $active }) =>
+  $active &&
+  `
+    font-weight: 500;
+  `}
+
+  &:not([data-active="true"]):hover {
+  background-color: var(--color-brown-100);
+}
+`;

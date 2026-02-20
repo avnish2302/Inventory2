@@ -1,24 +1,79 @@
+import styled from "styled-components";
+
 export default function Login() {
   return (
-    <div className="h-screen flex justify-center items-center bg-zinc-950">
-      <div className="bg-zinc-900 p-8 rounded-lg shadow w-80 space-y-4 border border-zinc-800">
-        <h2 className="text-xl font-bold text-amber-700">Login</h2>
+    <Page>
+      <Card>
+        <Heading>Login</Heading>
 
-        <input
-          placeholder="Email"
-          className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
-        />
+        <Input placeholder="Email" />
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 bg-zinc-800 border border-zinc-700 rounded"
-        />
+        <Input type="password" placeholder="Password" />
 
-        <button className="bg-amber-800 hover:bg-amber-700 w-full py-2 rounded text-white">
-          Login
-        </button>
-      </div>
-    </div>
+        <Button>Login</Button>
+      </Card>
+    </Page>
   );
 }
+
+/* ===============================
+   Styled Components
+================================ */
+
+const Page = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Slight warm tint for better separation */
+  background-color: var(--color-brown-50);
+`;
+
+const Card = styled.div`
+  background-color: var(--bg-card);
+  padding: 3.2rem;
+  width: 34rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-brown-200);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+`;
+
+const Heading = styled.h2`
+  font-size: 2.2rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--color-brown-700);
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--color-grey-0);
+  color: var(--text-primary);
+
+  &:focus {
+    outline: 2px solid var(--color-brown-500);
+    outline-offset: 2px;
+  }
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-brown-600);
+  color: white;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--color-brown-500);
+  }
+`;

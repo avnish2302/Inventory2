@@ -1,63 +1,119 @@
 import { NavLink } from "react-router-dom";
+import styled from "styled-components";
 
 export default function Sidebar({ isOpen, setIsOpen }) {
-  
   return (
-    <div
-      className={`
-        ${isOpen ? "w-60" : "w-16"}
-        h-screen
-        bg-zinc-900
-        text-zinc-200
-        p-5
-        border-r border-zinc-800
-        transition-all duration-300
-        overflow-hidden
-        flex flex-col
-      `}
-    >
-      {/* Top Section */}
-      <div className="flex justify-between items-center mb-6">
-        {isOpen && (
-          <h2 className="text-xl font-bold text-amber-700">SFA</h2>
-        )}
+    <Container $isOpen={isOpen}>
+      <TopSection>
+        {isOpen && <Logo>SFA</Logo>}
 
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-zinc-400 hover:text-white cursor-pointer"
-        >
+        <ToggleButton onClick={() => setIsOpen(prev => !prev)}>
           {isOpen ? "<-" : "->"}
-        </button>
-      </div>
+        </ToggleButton>
+      </TopSection>
 
-      {/* Navigation */}
-      <nav className="flex flex-col gap-2">
-  {[
-    { to: "/punchin", label: "Punch In" },
-    { to: "/checkin", label: "Check In" },
-    { to: "/checkout", label: "Check Out" },
-    { to: "/inventory", label: "Inventory" },
-    { to: "/routes", label: "Routes" },
-  ].map((item) => (
-    <NavLink
-      key={item.to}
-      to={item.to}
-      className={({ isActive }) =>
-        isOpen
-          ? `px-3 py-2 rounded transition-colors ${
-              isActive
-                ? "bg-zinc-800 text-white"
-                : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
-            }`
-          : "h-8"
-      }
-    >
-      {isOpen && item.label}
-    </NavLink>
-  ))}
-</nav>
-
-
-    </div>
+      <Nav>
+        {links.map((item) => (
+          <StyledNavLink
+            key={item.to}
+            to={item.to}
+            $isOpen={isOpen}
+          >
+            {isOpen && item.label}
+          </StyledNavLink>
+        ))}
+      </Nav>
+    </Container>
   );
 }
+
+/* ===============================
+   Styled Components
+================================ */
+
+const Container = styled.div`
+  width: ${({ $isOpen }) => ($isOpen ? "24rem" : "6.4rem")};
+  height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  padding: 2rem;
+  border-right: 1px solid var(--border-color);
+  transition: width 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`;
+
+const TopSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.4rem;
+`;
+
+const Logo = styled.h2`
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-brown-700);
+`;
+
+const ToggleButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 1.4rem;
+
+  &:hover {
+    color: var(--color-brown-600);
+  }
+`;
+
+const Nav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+`;
+
+const StyledNavLink = styled(NavLink)`
+  display: flex;
+  align-items: center;
+  justify-content: ${({ $isOpen }) =>
+    $isOpen ? "flex-start" : "center"};
+
+  padding: ${({ $isOpen }) =>
+    $isOpen ? "0.8rem 1.2rem" : "0.8rem"};
+
+  border-radius: var(--radius-sm);
+  font-size: 1.4rem;
+  transition: all 0.2s ease;
+
+  color: var(--text-secondary);
+
+  ${({ $isOpen }) =>
+    $isOpen &&
+    `
+ &.active {
+  background-color: var(--color-brown-100);
+  color: var(--color-brown-700);
+  font-weight: 500;
+}
+
+&:not(.active):hover {
+  background-color: var(--color-brown-50);
+  color: var(--color-brown-700);
+}
+  `}
+`;
+
+/* ===============================
+   Navigation Data
+================================ */
+
+const links = [
+  { to: "/punchin", label: "Punch In" },
+  { to: "/checkin", label: "Check In" },
+  { to: "/checkout", label: "Check Out" },
+  { to: "/inventory", label: "Inventory" },
+  { to: "/routes", label: "Routes" },
+];

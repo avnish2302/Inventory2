@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import Table from "../../components/Table";
 import Button from "../../components/Button";
 
@@ -53,31 +54,33 @@ export default function ShowcaseAddedTable({ showcase }) {
               {row.image?.name || "Image"}
             </Table.Cell>
 
-            <Table.Cell className="flex gap-2">
-              {showcase.editIndex === i ? (
-                <Button
-                  variant="saveEdit"
-                  onClick={showcase.handleSaveEdit}
-                >
-                  Save Edit
-                </Button>
-              ) : (
-                <Button
-                  variant="edit"
-                  onClick={() => showcase.setEditIndex(i)}
-                >
-                  Edit
-                </Button>
-              )}
+            <Table.Cell>
+              <Actions>
+                {showcase.editIndex === i ? (
+                  <Button
+                    variation="saveEdit"
+                    onClick={showcase.handleSaveEdit}
+                  >
+                    Save Edit
+                  </Button>
+                ) : (
+                  <Button
+                    variation="edit"
+                    onClick={() => showcase.setEditIndex(i)}
+                  >
+                    Edit
+                  </Button>
+                )}
 
-              <Button
-                variant="delete"
-                onClick={() =>
-                  showcase.handleDeleteSaved(i)
-                }
-              >
-                Delete
-              </Button>
+                <Button
+                  variation="delete"
+                  onClick={() =>
+                    showcase.handleDeleteSaved(i)
+                  }
+                >
+                  Delete
+                </Button>
+              </Actions>
             </Table.Cell>
           </Table.Row>
         )}
@@ -85,3 +88,11 @@ export default function ShowcaseAddedTable({ showcase }) {
     </Table>
   );
 }
+
+/* =============================== */
+
+const Actions = styled.div`
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+`;

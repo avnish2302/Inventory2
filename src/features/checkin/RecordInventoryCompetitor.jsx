@@ -1,51 +1,75 @@
-import Button from "../../components/Button";
+import styled from "styled-components";
 import ShopName from "../../components/ShopName";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
 import { useRecordInventoryCompetitor } from "../../hooks/useRecordInventoryCompetitor";
-import RecordInventoryCompetitorAddedTable from "./RecordInventoryCompetitorAddedTable";
 import RecordInventoryCompetitorTable from "./RecordInventoryCompetitorTable";
-
+import RecordInventoryCompetitorAddedTable from "./RecordInventoryCompetitorAddedTable";
+import AddRowButton from "../../components/AddRowButton";
 
 export default function RecordInventoryCompetitor() {
-  const inventory = useRecordInventoryCompetitor();
+  const inventoryCompetitor = useRecordInventoryCompetitor();
 
   return (
-    <div className="space-y-8">
+    <Wrapper>
       <ShopName />
+      <AddRowButton onClick={inventoryCompetitor.addRow} />
 
-      {/* INPUT SECTION */}
-      <div className="bg-zinc-900 p-6 rounded-lg space-y-6">
-        <RecordInventoryCompetitorTable inventory={inventory} />
+      <Card width="100rem">
+        <Section>
+          <RecordInventoryCompetitorTable inventoryCompetitor={inventoryCompetitor} />
 
-        <div className="flex justify-center">
-          <Button
-            variant="primary"
-            size="md"
-            onClick={inventory.handleAdd}
-            disabled={!inventory.isValid()}
-          >
-            Add
-          </Button>
-        </div>
-      </div>
-
-      {/* SAVED SECTION */}
-      {inventory.saved.length > 0 && (
-        <div className="bg-zinc-900 p-6 rounded-lg space-y-6">
-          <RecordInventoryCompetitorAddedTable
-            inventory={inventory}
-          />
-
-          <div className="flex justify-center">
+          <Center>
             <Button
-              variant="primary"
+              variation="primary"
               size="md"
-              onClick={inventory.handleSaveToDatabase}
+              onClick={inventoryCompetitor.handleAdd}
+              disabled={!inventoryCompetitor.isValid()}
             >
-              Save
+              Add
             </Button>
-          </div>
-        </div>
+          </Center>
+        </Section>
+      </Card>
+
+      {inventoryCompetitor.saved.length > 0 && (
+        <Card width="100rem">
+          <Section>
+            <RecordInventoryCompetitorAddedTable inventoryCompetitor={inventoryCompetitor} />
+
+            <Center>
+              <Button
+                variation="primary"
+                size="md"
+                onClick={inventoryCompetitor.handleSaveToDatabase}
+              >
+                Save
+              </Button>
+            </Center>
+          </Section>
+        </Card>
       )}
-    </div>
+    </Wrapper>
   );
 }
+
+/* =============================== */
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+`;
+
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+`;
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+

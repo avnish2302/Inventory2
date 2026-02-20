@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
-import Input from "../../components/Input";
+import styled from "styled-components";
 import Button from "../../components/Button";
+import Card from "../../components/Card";
 import ShopName from "../../components/ShopName";
 
 export default function Promotions() {
@@ -9,9 +10,7 @@ export default function Promotions() {
     handleSubmit,
     reset,
     formState: { isValid },
-  } = useForm({
-    mode: "onChange",
-  });
+  } = useForm({ mode: "onChange" });
 
   const onSubmit = (data) => {
     console.log("Saved:", data);
@@ -19,74 +18,99 @@ export default function Promotions() {
   };
 
   return (
-    <div><ShopName/>
-    <div className="flex justify-center items-center">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-zinc-900 p-10 rounded-lg w-full max-w-2xl
- space-y-3 border border-zinc-700"
-      >
-        <h3 className="text-lg font-semibold text-amber-600">Promotions</h3>
+    <>
+      <ShopName />
 
-        <Input
-          label="From Date"
-          type="date"
-          {...register("fromDate", { required: true })}
-        />
+      <Card width="100rem">
+        <Title>Promotions</Title>
 
-        <Input
-          label="To Date"
-          type="date"
-          {...register("toDate", { required: true })}
-        />
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <InputField
+            type="date"
+            {...register("fromDate", { required: true })}
+            placeholder="From Date"
+          />
 
-        <Input label="Party" {...register("party", { required: true })} />
+          <InputField
+            type="date"
+            {...register("toDate", { required: true })}
+            placeholder="To Date"
+          />
 
-        {/* CATEGORY */}
-        <div className="flex gap-3 items-center">
-          <label className="text-sm w-32">Category</label>
-          <select
-            {...register("category", { required: true })}
-            className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
-          >
+          <InputField
+            {...register("party", { required: true })}
+            placeholder="Party"
+          />
+
+          <Select {...register("category", { required: true })}>
             <option value="">Select Category</option>
             <option>Beer</option>
             <option>Vodka</option>
             <option>Rum</option>
-          </select>
-        </div>
+          </Select>
 
-        <Input label="Brand(s)" {...register("brands")} />
+          <InputField {...register("brands")} placeholder="Brand(s)" />
 
-        {/* SKU */}
-        <div className="flex gap-3 items-center">
-          <label className="text-sm w-32">SKU</label>
-          <select
-            {...register("sku", { required: true })}
-            className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
-          >
+          <Select {...register("sku", { required: true })}>
             <option value="">Select SKU</option>
             <option>Q</option>
             <option>P</option>
             <option>N</option>
             <option>All</option>
             <option>500</option>
-          </select>
-        </div>
+          </Select>
 
-        <Input
-          label="Scheme / Promotion"
-          textarea
-          {...register("scheme", { required: true })}
-        />
+          <Textarea
+            {...register("scheme", { required: true })}
+            placeholder="Scheme / Promotion"
+          />
 
-        <div className="flex justify-center mt-4">
-          <Button type="submit" variant="primary" size="md" disabled={!isValid}>
+          <Button
+            type="submit"
+            variation="primary"
+            size="md"
+            disabled={!isValid}
+            style={{ width: "100%" }}
+          >
             Save
           </Button>
-        </div>
-      </form>
-    </div>
-    </div>
+        </Form>
+      </Card>
+    </>
   );
 }
+
+
+const Title = styled.h3`
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--color-brown-700);
+  margin-bottom: 2rem;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+`;
+
+const InputField = styled.input`
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+`;
+
+const Select = styled.select`
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+`;
+
+const Textarea = styled.textarea`
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+`;

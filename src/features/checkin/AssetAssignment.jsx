@@ -1,52 +1,75 @@
-import Button from "../../components/Button";
+import styled from "styled-components";
 import ShopName from "../../components/ShopName";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
 import { useAssetAssignment } from "../../hooks/useAssetAssignment";
-import AssetAssignmentAddedTable from "./AssetAssignmentAddedTable";
 import AssetAssignmentTable from "./AssetAssignmentTable";
+import AssetAssignmentAddedTable from "./AssetAssignmentAddedTable";
+import AddRowButton from "../../components/AddRowButton";
 
 export default function AssetAssignment() {
   const asset = useAssetAssignment();
 
   return (
-    <div className="space-y-8">
+    <Wrapper>
       <ShopName />
+      <AddRowButton onClick={asset.addRow} />
 
-      {/* ---------- INPUT SECTION ---------- */}
-      <div className="bg-zinc-900 p-6 rounded-lg space-y-6">
+      <Card width="100rem">
+        <Section>
+          <AssetAssignmentTable asset={asset} />
 
-        <AssetAssignmentTable asset={asset} />
-
-        <div className="flex justify-center">
-          <Button
-            variant="primary"
-            size="md"
-            onClick={asset.handleAdd}
-            disabled={!asset.isValid()}
-          >
-            Add
-          </Button>
-        </div>
-
-      </div>
-
-      {/* ---------- SAVED SECTION ---------- */}
-      {asset.saved.length > 0 && (
-        <div className="bg-zinc-900 p-6 rounded-lg space-y-6">
-
-          <AssetAssignmentAddedTable asset={asset} />
-
-          <div className="flex justify-center">
+          <Center>
             <Button
-              variant="primary"
+              variation="primary"
               size="md"
-              onClick={asset.handleSaveToDatabase}
+              onClick={asset.handleAdd}
+              disabled={!asset.isValid()}
             >
-              Save
+              Add
             </Button>
-          </div>
+          </Center>
+        </Section>
+      </Card>
 
-        </div>
+      {asset.saved.length > 0 && (
+        <Card width="100rem">
+          <Section>
+            <AssetAssignmentAddedTable asset={asset} />
+
+            <Center>
+              <Button
+                variation="primary"
+                size="md"
+                onClick={asset.handleSaveToDatabase}
+              >
+                Save
+              </Button>
+            </Center>
+          </Section>
+        </Card>
       )}
-    </div>
+    </Wrapper>
   );
 }
+
+/* =============================== */
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+`;
+
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+`;
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+

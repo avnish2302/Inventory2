@@ -1,12 +1,13 @@
 import { useState } from "react";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
 import { useForm } from "react-hook-form";
+import styled from "styled-components";
+import Button from "../../components/Button";
+import Card from "../../components/Card";
 import ShopName from "../../components/ShopName";
-
 
 export default function Collection() {
   const [selectedFile, setSelectedFile] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -15,108 +16,151 @@ export default function Collection() {
   } = useForm({ mode: "onChange" });
 
   const onSubmit = () => {
-     reset();
-
     reset();
+    setSelectedFile(null);
   };
 
   return (
-    <div>
+    <>
       <ShopName />
-      <div className="flex justify-center items-center">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="bg-zinc-900 p-6 rounded-lg w-full max-w-2xl space-y-5 border border-zinc-700"
-        >
-          <h3 className="text-lg font-semibold text-amber-600 mb-2">
-            Collection
-          </h3>
 
-          {/* Invoice */}
-          <div className="grid grid-cols-[150px_1fr] items-center gap-4">
-            <label className="text-zinc-300">Invoice #</label>
-            <input
-              {...register("invoice", { required: true })}
-              className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
-            />
-          </div>
+      <Card width="100rem">
+        <Title>Collection</Title>
 
-          {/* Remarks */}
-          <div className="grid grid-cols-[150px_1fr] items-center gap-4">
-            <label className="text-zinc-300">Remarks</label>
-            <input
-              {...register("remarks", { required: true })}
-              className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
-            />
-          </div>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <FieldGroup>
+            <Label>Invoice #</Label>
+            <Input {...register("invoice", { required: true })} />
+          </FieldGroup>
 
-          {/* Payment Mode */}
-          <div className="grid grid-cols-[150px_1fr] items-center gap-4">
-            <label className="text-zinc-300">Payment Mode</label>
-            <select
-              {...register("paymentMode", { required: true })}
-              className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
-            >
+          <FieldGroup>
+            <Label>Remarks</Label>
+            <Input {...register("remarks", { required: true })} />
+          </FieldGroup>
+
+          <FieldGroup>
+            <Label>Payment Mode</Label>
+            <Select {...register("paymentMode", { required: true })}>
               <option>Cash</option>
-            </select>
-          </div>
+            </Select>
+          </FieldGroup>
 
-          {/* Amount */}
-          <div className="grid grid-cols-[150px_1fr] items-center gap-4">
-            <label className="text-zinc-300">Amount</label>
-            <input
+          <FieldGroup>
+            <Label>Amount</Label>
+            <Input
               type="number"
               {...register("amount", { required: true })}
-              className="bg-zinc-800 border border-zinc-700 px-3 py-2 rounded w-full"
             />
-          </div>
+          </FieldGroup>
 
-          {/* Image */}
-          <div className="grid grid-cols-[150px_1fr] items-center gap-4">
-            <label className="text-zinc-300">Image</label>
+          <FieldGroup>
+            <Label>Image</Label>
 
             {!selectedFile ? (
-              <label className="cursor-pointer bg-zinc-800 px-4 py-2 rounded text-sm hover:bg-zinc-700 w-fit">
+              <FileButton>
                 Choose File
-                <input
+                <HiddenFileInput
                   type="file"
-                  className="hidden"
-                  {...register("image")}
                   onChange={(e) => setSelectedFile(e.target.files[0])}
                 />
-              </label>
+              </FileButton>
             ) : (
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-zinc-400 break-all max-w-md">
-                  {selectedFile.name}
-                </span>
-
-                <label className="cursor-pointer text-amber-600 text-sm hover:underline">
-                  Choose Another
-                  <input
+              <FileInfo>
+                <FileName>{selectedFile.name}</FileName>
+                <FileButton>
+                  Change
+                  <HiddenFileInput
                     type="file"
-                    className="hidden"
-                    {...register("image")}
-                    onChange={(e) => setSelectedFile(e.target.files[0])}
+                    onChange={(e) =>
+                      setSelectedFile(e.target.files[0])
+                    }
                   />
-                </label>
-              </div>
+                </FileButton>
+              </FileInfo>
             )}
-          </div>
+          </FieldGroup>
 
-          {/* Save Button */}
-          <div className="flex justify-center pt-4">
-            <Button
-              type="submit"
-              variant="primary"
-              size="md"
-              disabled={!isValid}
-            >
-              Save
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>
+          <Button
+            type="submit"
+            variation="primary"
+            size="md"
+            disabled={!isValid}
+            style={{ width: "100%" }}
+          >
+            Save
+          </Button>
+        </Form>
+      </Card>
+    </>
   );
 }
+
+/* ===============================
+   Styled Components
+================================ */
+
+const Title = styled.h3`
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--color-brown-700);
+  margin-bottom: 2rem;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+`;
+
+const FieldGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+`;
+
+const Label = styled.label`
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+`;
+
+const Input = styled.input`
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+`;
+
+const Select = styled.select`
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-main);
+`;
+
+const FileButton = styled.label`
+  cursor: pointer;
+  background-color: var(--color-grey-200);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-sm);
+  width: fit-content;
+
+  &:hover {
+    background-color: var(--color-grey-300);
+  }
+`;
+
+const HiddenFileInput = styled.input`
+  display: none;
+`;
+
+const FileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+`;
+
+const FileName = styled.span`
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  word-break: break-all;
+`;

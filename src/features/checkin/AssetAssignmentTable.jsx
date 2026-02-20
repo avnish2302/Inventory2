@@ -1,94 +1,115 @@
 import Table from "../../components/Table";
 import Button from "../../components/Button";
+import styled from "styled-components";
 
 export default function AssetAssignmentTable({ asset }) {
   return (
-    <>
-      <div className="flex justify-end">
-        <Button variant="neutral" size="md" onClick={asset.addRow}>
-          Add Row
-        </Button>
-      </div>
+    <Table>
+      <Table.Header>
+        <Table.Cell>Brand</Table.Cell>
+        <Table.Cell>Asset</Table.Cell>
+        <Table.Cell>Remarks</Table.Cell>
+        <Table.Cell>Image</Table.Cell>
+        <Table.Cell>Action</Table.Cell>
+      </Table.Header>
 
-      <Table>
-        <Table.Header>
-          <Table.Cell>Brand</Table.Cell>
-          <Table.Cell>Asset</Table.Cell>
-          <Table.Cell>Remarks</Table.Cell>
-          <Table.Cell>Image</Table.Cell>
-          <Table.Cell>Action</Table.Cell>
-        </Table.Header>
+      <Table.Body
+        data={asset.rows}
+        render={(row, i) => (
+          <Table.Row key={i}>
+            <Table.Cell>
+              <Table.Input
+                value={row.brand}
+                onChange={(e) => asset.updateRow(i, "brand", e.target.value)}
+              />
+            </Table.Cell>
 
-        <Table.Body
-          data={asset.rows}
-          render={(row, i) => (
-            <Table.Row key={i}>
-              <Table.Cell>
-                <Table.Input
-                  value={row.brand}
-                  onChange={(e) => asset.updateRow(i, "brand", e.target.value)}
-                />
-              </Table.Cell>
+            <Table.Cell>
+              <Table.Input
+                value={row.asset}
+                onChange={(e) => asset.updateRow(i, "asset", e.target.value)}
+              />
+            </Table.Cell>
 
-              <Table.Cell>
-                <Table.Input
-                  value={row.asset}
-                  onChange={(e) => asset.updateRow(i, "asset", e.target.value)}
-                />
-              </Table.Cell>
+            <Table.Cell>
+              <Table.Input
+                value={row.remarks}
+                onChange={(e) =>
+                  asset.updateRow(i, "remarks", e.target.value)
+                }
+              />
+            </Table.Cell>
 
-              <Table.Cell>
-                <Table.Input
-                  value={row.remarks}
-                  onChange={(e) =>
-                    asset.updateRow(i, "remarks", e.target.value)
-                  }
-                />
-              </Table.Cell>
+            <Table.Cell>
+              <FileUploadWrapper>
+                {!row.image ? (
+                  <FileButton>
+                    Choose File
+                    <Table.HiddenInput
+                      type="file"
+                      onChange={(e) =>
+                        asset.updateRow(i, "image", e.target.files[0])
+                      }
+                    />
+                  </FileButton>
+                ) : (
+                  <FileInfo>
+                    <FileName>{row.image.name}</FileName>
 
-              <Table.Cell>
-                <div className="flex flex-col items-center gap-1">
-                  {!row.image ? (
-                    <label className="cursor-pointer bg-zinc-800 px-3 py-1 rounded text-sm hover:bg-zinc-700">
-                      Choose File
-                      <input
+                    <Table.ChangeLabel>
+                      Change
+                      <Table.HiddenInput
                         type="file"
-                        className="hidden"
                         onChange={(e) =>
                           asset.updateRow(i, "image", e.target.files[0])
                         }
                       />
-                    </label>
-                  ) : (
-                    <div className="flex flex-col items-center gap-1">
-                      <span className="text-xs break-all max-w-[120px]">
-                        {row.image.name}
-                      </span>
+                    </Table.ChangeLabel>
+                  </FileInfo>
+                )}
+              </FileUploadWrapper>
+            </Table.Cell>
 
-                      <label className="cursor-pointer text-amber-600 text-xs hover:underline">
-                        Change
-                        <input
-                          type="file"
-                          className="hidden"
-                          onChange={(e) =>
-                            asset.updateRow(i, "image", e.target.files[0])
-                          }
-                        />
-                      </label>
-                    </div>
-                  )}
-                </div>
-              </Table.Cell>
-
-              <Table.Cell>
-                <Button variant="delete" onClick={() => asset.deleteRow(i)}>
-                  Delete
-                </Button>
-              </Table.Cell>
-            </Table.Row>
-          )}
-        />
-      </Table>
-    </>
+            <Table.Cell>
+              <Button variation="delete" onClick={() => asset.deleteRow(i)}>
+                Delete
+              </Button>
+            </Table.Cell>
+          </Table.Row>
+        )}
+      />
+    </Table>
   );
 }
+
+/* Styled Components for File Upload */
+const FileUploadWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+`;
+
+const FileButton = styled.label`
+  cursor: pointer;
+  background-color: var(--color-grey-200);
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.2rem;
+
+  &:hover {
+    background-color: var(--color-grey-300);
+  }
+`;
+
+const FileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+`;
+
+const FileName = styled.span`
+  font-size: 1.2rem;
+  word-break: break-word;
+`;
