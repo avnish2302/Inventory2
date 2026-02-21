@@ -1,7 +1,8 @@
 import { useState } from "react";
 import ShopName from "../components/ShopName";
 import Button from "../components/Button";
-
+import Card from "../components/Card";  // Importing Card Component
+import styled from "styled-components";
 
 export default function CheckOut({
   shopsVisited = 0,
@@ -10,7 +11,6 @@ export default function CheckOut({
   const [timestamp, setTimestamp] = useState(null);
 
   /* ---------- CALCULATIONS ---------- */
-
 
   /* ---------- SAVE ---------- */
 
@@ -22,60 +22,133 @@ export default function CheckOut({
   };
 
   return (
-    <div className="space-y-8 p-6 bg-zinc-900 rounded border border-zinc-800">
-      <ShopName />
+    <Wrapper>
+        <ShopName/>
+      <Card width="100rem">
 
-      {/* ---------- ACTIVITY SUMMARY ---------- */}
-      <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-amber-600">
-          Activity Summary
-        </h2>
+        {/* ---------- ACTIVITY SUMMARY ---------- */}
+        <Section>
+          <h2>Activity Summary</h2>
+          <Grid>
+            <GridItem>Entered Inventory</GridItem>
+            <GridItem>: 0</GridItem>
+            <GridItem>Collected Cash</GridItem>
+            <GridItem>: 0 Rs</GridItem>
+            <GridItem>Promotion Given</GridItem>
+            <GridItem>: Promotion given goes here</GridItem>
+          </Grid>
+        </Section>
 
-        <div className="grid grid-cols-[220px_1fr] gap-y-2">
-          <div>Entered Inventory </div>
-          <div className="font-semibold">: 0 </div>
+        {/* ---------- PENDING ---------- */}
+        <Section>
+          <h2>Pending</h2>
+          <p>1. No collections</p>
+        </Section>
 
-          <div>Collected Cash </div>
-          <div className="font-semibold">: 0 Rs</div>
+        {/* ---------- SHOP STATS ---------- */}
+        <ShopStats>
+          <Stat>
+            <StatLabel>Shops Visited</StatLabel>
+            <StatValue>{shopsVisited}</StatValue>
+          </Stat>
 
-          <div>Promotion Given</div>
-          <div>: Promotion given goes here</div>
-        </div>
-      </div>
+          <Stat>
+            <StatLabel>Shops Pending</StatLabel>
+            <StatValue>{shopsPending}</StatValue>
+          </Stat>
+        </ShopStats>
 
-      {/* ---------- PENDING ---------- */}
-      <div className="space-y-3">
-        <h2 className="text-lg font-semibold text-amber-600">Pending</h2>
+        {/* ---------- SAVE BUTTON ---------- */}
+        <ButtonWrapper>
+          <Button variant="primary" size="md" onClick={handleSave}>
+            Save
+          </Button>
+        </ButtonWrapper>
 
-        <p>1. No collections</p>
-      </div>
-
-      {/* ---------- SHOP STATS ---------- */}
-      <div className="flex gap-10 text-center">
-        <div>
-          <p className="text-sm text-zinc-400">Shops Visited</p>
-          <p className="text-xl font-bold">{shopsVisited}</p>
-        </div>
-
-        <div>
-          <p className="text-sm text-zinc-400">Shops Pending</p>
-          <p className="text-xl font-bold">{shopsPending}</p>
-        </div>
-      </div>
-
-      {/* ---------- SAVE BUTTON ---------- */}
-      <div className="flex justify-center">
-        <Button variant="primary" size="md" onClick={handleSave}>
-          Save
-        </Button>
-      </div>
-
-      {/* ---------- TIMESTAMP DISPLAY ---------- */}
-      {timestamp && (
-        <div className="text-center text-sm text-zinc-400">
-          Saved at: {new Date(timestamp).toLocaleString()}
-        </div>
-      )}
-    </div>
+        {/* ---------- TIMESTAMP DISPLAY ---------- */}
+        {timestamp && (
+          <Timestamp>
+            Saved at: {new Date(timestamp).toLocaleString()}
+          </Timestamp>
+        )}
+      </Card>
+    </Wrapper>
   );
 }
+
+/* =============================== STYLED COMPONENTS ============================== */
+
+const Wrapper = styled.div`
+  padding: 2.4rem;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+`;
+
+const Section = styled.section`
+  margin-bottom: 2.4rem;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-brown-700);
+    margin-bottom: 1.2rem;
+    text-decoration: underline;
+  }
+    p{
+    font-size: 1.8rem;
+    color: var(--color-brown-600);
+    }
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1rem;
+`;
+
+const GridItem = styled.div`
+  font-size: 1.8rem;
+  color: var(--color-brown-600);
+`;
+
+const Strong = styled.span`
+  font-weight: bold;
+  color: var(--color-brown-700);
+`;
+
+const ShopStats = styled.div`
+  display: flex;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+`;
+
+const Stat = styled.div`
+  text-align: center;
+   margin-right : 2rem;
+ 
+`;
+
+const StatLabel = styled.p`
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-brown-700);
+    margin-bottom: 1.2rem;
+    text-decoration: underline;
+`;
+
+const StatValue = styled.p`
+  font-size: 2rem;
+
+  color: var(--color-brown-700);
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const Timestamp = styled.div`
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--color-zinc-400);
+`;

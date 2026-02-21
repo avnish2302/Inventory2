@@ -5,11 +5,13 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 
 export default function MainLayout() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true); // Sidebar state
 
   return (
     <Layout>
-      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <SidebarWrapper>
+        <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      </SidebarWrapper>
 
       <ContentWrapper>
         <Navbar />
@@ -26,28 +28,29 @@ export default function MainLayout() {
 ================================ */
 
 const Layout = styled.div`
-  height: 100vh;
   display: flex;
+  height: 100vh;
   background-color: var(--bg-main);
   color: var(--text-primary);
-  overflow: hidden;
+`;
+
+const SidebarWrapper = styled.div`
+  flex: 0 0 240px; /* Fix sidebar width */
 `;
 
 const ContentWrapper = styled.div`
-  flex: 1;
   display: flex;
   flex-direction: column;
+  flex: 1;
   height: 100%;
-  transition: all 0.3s ease;
 `;
 
 const MainContent = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  padding: 2.4rem;
-
-   /* 👇 Added for global centering */
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  padding: 2.4rem;
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
 `;

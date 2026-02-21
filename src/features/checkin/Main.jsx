@@ -4,7 +4,7 @@ import ShopName from "../../components/ShopName";
 import Card from "../../components/Card";
 import styled from "styled-components";
 
-export default function Basic() {
+export default function Main() {
   const {
     register,
     handleSubmit,

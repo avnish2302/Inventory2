@@ -1,31 +1,29 @@
+import styled from "styled-components";
 import Button from "../../components/Button";
 
 export default function RecordInventoryOwnTable({ own }) {
   return (
-    <div className="space-y-6">
-
+    <Wrapper>
       {/* CATEGORY */}
-      <select
+      <Select
         value={own.category}
         onChange={(e) => own.setCategory(e.target.value)}
-        className="bg-zinc-800 p-2 rounded border border-zinc-700 w-full"
       >
         <option value="">Select Category</option>
         <option>Beer</option>
         <option>Whisky</option>
-      </select>
+      </Select>
 
       {/* PRODUCT + ADD ROW */}
-      <div className="flex gap-2">
-        <select
+      <RowWrapper>
+        <Select
           value={own.product}
           onChange={(e) => own.setProduct(e.target.value)}
-          className="bg-zinc-800 p-2 rounded border border-zinc-700 w-full"
         >
           <option value="">Select Product</option>
           <option>Kibba 650 ml</option>
           <option>Kibba 500</option>
-        </select>
+        </Select>
 
         <Button
           variant="neutral"
@@ -35,94 +33,121 @@ export default function RecordInventoryOwnTable({ own }) {
         >
           Add Row
         </Button>
-      </div>
+      </RowWrapper>
 
       {/* INPUT TABLE */}
       {own.rows.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="w-full border border-zinc-600 border-collapse text-sm">
+        <TableWrapper>
+          <StyledTable>
             <thead>
-              <tr className="bg-zinc-800 text-white">
-                <th className="border border-zinc-700 py-2 px-3 text-center">
-                  Product
-                </th>
-                <th className="border border-zinc-700 py-2 px-3 text-center">
-                  Receipt
-                </th>
-                <th colSpan="2" className="border border-zinc-700 py-2 px-3 text-center">
-                  Cases
-                </th>
-                <th colSpan="2" className="border border-zinc-700 py-2 px-3 text-center">
-                  Bottles
-                </th>
-                <th className="border border-zinc-700 py-2 px-3 text-center">
-                  Action
-                </th>
+              <tr className="header-row">
+                <Th>Product</Th>
+                <Th>Receipt</Th>
+                <Th colSpan="2">Cases</Th>
+                <Th colSpan="2">Bottles</Th>
+                <Th>Action</Th>
               </tr>
 
-              <tr className="bg-zinc-800 text-white">
-                <th className="border border-zinc-700 py-2 px-3">—</th>
-                <th className="border border-zinc-700 py-2 px-3">—</th>
-                <th className="border border-zinc-700 py-2 px-3 text-center">
-                  Warm
-                </th>
-                <th className="border border-zinc-700 py-2 px-3 text-center">
-                  Cold
-                </th>
-                <th className="border border-zinc-700 py-2 px-3 text-center">
-                  Warm
-                </th>
-                <th className="border border-zinc-700 py-2 px-3 text-center">
-                  Cold
-                </th>
-                <th className="border border-zinc-700">—</th>
+              <tr className="sub-header-row">
+                <Th>—</Th>
+                <Th>—</Th>
+                <Th>Warm</Th>
+                <Th>Cold</Th>
+                <Th>Warm</Th>
+                <Th>Cold</Th>
+                <Th>—</Th>
               </tr>
             </thead>
 
             <tbody>
               {own.rows.map((r, i) => (
-                <tr key={i} className="text-center">
-                  <td className="border py-2 px-3 border-zinc-700">
-                    {r.product}
-                  </td>
-
-                  {[
-                    "receipt",
-                    "casesWarm",
-                    "casesCold",
-                    "bottlesWarm",
-                    "bottlesCold",
-                  ].map((field) => (
-                    <td
-                      key={field}
-                      className="border py-2 px-3 border-zinc-700"
-                    >
-                      <input
+                <tr key={i}>
+                  <Td>{r.product}</Td>
+                  {["receipt", "casesWarm", "casesCold", "bottlesWarm", "bottlesCold"].map((field) => (
+                    <Td key={field}>
+                      <Input
                         type="number"
                         value={r[field]}
-                        onChange={(e) =>
-                          own.handleChange(i, field, e.target.value)
-                        }
-                        className="bg-zinc-800 w-full py-2 px-2 outline-none text-center rounded"
+                        onChange={(e) => own.handleChange(i, field, e.target.value)}
                       />
-                    </td>
+                    </Td>
                   ))}
-
-                  <td className="border py-2 px-3 border-zinc-700">
+                  <Td>
                     <Button
-                      variant="delete"
+                      variation="delete"
                       size="sm"
                       onClick={() => own.handleDeleteRow(i)}
                     >
                       Delete
                     </Button>
-                  </td>
+                  </Td>
                 </tr>
               ))}
             </tbody>
-          </table>
-        </div>
+          </StyledTable>
+        </TableWrapper>
       )}
-    </div>
+    </Wrapper>
   );
 }
+
+/* =============================== STYLED COMPONENTS ============================== */
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
+const Select = styled.select`
+  background-color: var(--color-grey-000);
+  color: var(--color-grey-900);
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--border-color);
+  width: 100%;
+`;
+
+const RowWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+const TableWrapper = styled.div`
+  overflow-x: auto;
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.4rem;
+  background-color: var(--bg-main);
+`;
+
+const Th = styled.th`
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  background-color: var(--color-brown-700);
+  color: var(--color-grey-0);
+`;
+
+const Td = styled.td`
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+`;
+
+const Input = styled.input`
+  background-color: var(--color-grey-0);
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  text-align: center;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-brown-600);
+  }
+`;

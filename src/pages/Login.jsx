@@ -1,16 +1,17 @@
 import styled from "styled-components";
+import Card from "../components/Card";
+import Button from "../components/Button";
 
 export default function Login() {
   return (
     <Page>
       <Card>
+        <Content>
         <Heading>Login</Heading>
-
         <Input placeholder="Email" />
-
         <Input type="password" placeholder="Password" />
-
-        <Button>Login</Button>
+        <Button variation="primary" size="lg">Login</Button>
+        </Content>
       </Card>
     </Page>
   );
@@ -19,6 +20,11 @@ export default function Login() {
 /* ===============================
    Styled Components
 ================================ */
+
+const Content = styled.div`
+display : flex;
+flex-direction : column;
+`
 
 const Page = styled.div`
   height: 100vh;
@@ -29,7 +35,7 @@ const Page = styled.div`
   /* Slight warm tint for better separation */
   background-color: var(--color-brown-50);
 `;
-
+/*
 const Card = styled.div`
   background-color: var(--bg-card);
   padding: 3.2rem;
@@ -42,7 +48,7 @@ const Card = styled.div`
   flex-direction: column;
   gap: 1.8rem;
 `;
-
+*/
 const Heading = styled.h2`
   font-size: 2.2rem;
   font-weight: 600;
@@ -51,6 +57,8 @@ const Heading = styled.h2`
 `;
 
 const Input = styled.input`
+  margin-top: 10px;
+  margin-bottom: 10px;
   width: 100%;
   padding: 1rem 1.2rem;
   border-radius: var(--radius-sm);
@@ -64,6 +72,7 @@ const Input = styled.input`
   }
 `;
 
+/*
 const Button = styled.button`
   width: 100%;
   padding: 1rem;
@@ -77,3 +86,5 @@ const Button = styled.button`
     background-color: var(--color-brown-500);
   }
 `;
+
+*/

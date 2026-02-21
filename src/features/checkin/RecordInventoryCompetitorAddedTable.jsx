@@ -2,7 +2,7 @@ import Table from "../../components/Table";
 import Button from "../../components/Button";
 
 export default function RecordInventoryCompetitorAddedTable({
-  inventory,
+  inventoryCompetitor,
 }) {
   const {
     saved,
@@ -12,7 +12,7 @@ export default function RecordInventoryCompetitorAddedTable({
     handleSavedChange,
     handleDeleteSaved,
     handleSaveEdit,
-  } = inventory;
+  } = inventoryCompetitor;
 
   return (
     <Table>
@@ -54,10 +54,10 @@ export default function RecordInventoryCompetitorAddedTable({
               </Table.Cell>
             ))}
 
-            <Table.Cell className="flex gap-2">
+            <Table.Cell>
               {editIndex === i ? (
                 <Button
-                  variant="saveEdit"
+                  variation="saveEdit"
                   size="sm"
                   onClick={handleSaveEdit}
                 >
@@ -65,7 +65,7 @@ export default function RecordInventoryCompetitorAddedTable({
                 </Button>
               ) : (
                 <Button
-                  variant="edit"
+                  variation="edit"
                   size="sm"
                   onClick={() => setEditIndex(i)}
                 >
@@ -74,7 +74,7 @@ export default function RecordInventoryCompetitorAddedTable({
               )}
 
               <Button
-                variant="delete"
+                variation="delete"
                 size="sm"
                 onClick={() =>
                   handleDeleteSaved(i)

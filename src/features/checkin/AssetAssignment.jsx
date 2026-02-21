@@ -12,8 +12,11 @@ export default function AssetAssignment() {
 
   return (
     <Wrapper>
-      <ShopName />
-      <AddRowButton onClick={asset.addRow} />
+       <HeaderRow>
+    <span>Assets being assigned to :</span>
+    <ShopName />
+  </HeaderRow>
+    <AddRowButton onClick={asset.addRow} />
 
       <Card width="100rem">
         <Section>
@@ -72,4 +75,8 @@ const Center = styled.div`
   justify-content: center;
 `;
 
-
+const HeaderRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+`;

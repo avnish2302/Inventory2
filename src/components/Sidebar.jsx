@@ -2,14 +2,18 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Sidebar({ isOpen, setIsOpen }) {
+
+  const links = [
+  { to: "/punchin", label: "Punch In" },
+  { to: "/checkin", label: "Check In" },
+  { to: "/checkout", label: "Check Out" },
+  { to: "/punchout", label : "Punch Out"},
+  { to: "/routes", label: "Routes" },
+]; 
   return (
     <Container $isOpen={isOpen}>
       <TopSection>
-        {isOpen && <Logo>SFA</Logo>}
-
-        <ToggleButton onClick={() => setIsOpen(prev => !prev)}>
-          {isOpen ? "<-" : "->"}
-        </ToggleButton>
+       <Logo>SFA</Logo>
       </TopSection>
 
       <Nav>
@@ -53,21 +57,10 @@ const TopSection = styled.div`
 
 const Logo = styled.h2`
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 400;
   color: var(--color-brown-700);
 `;
 
-const ToggleButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text-secondary);
-  font-size: 1.4rem;
-
-  &:hover {
-    color: var(--color-brown-600);
-  }
-`;
 
 const Nav = styled.nav`
   display: flex;
@@ -100,7 +93,7 @@ const StyledNavLink = styled(NavLink)`
 }
 
 &:not(.active):hover {
-  background-color: var(--color-brown-50);
+  background-color: var(--color-brown-100);
   color: var(--color-brown-700);
 }
   `}
@@ -110,10 +103,3 @@ const StyledNavLink = styled(NavLink)`
    Navigation Data
 ================================ */
 
-const links = [
-  { to: "/punchin", label: "Punch In" },
-  { to: "/checkin", label: "Check In" },
-  { to: "/checkout", label: "Check Out" },
-  { to: "/inventory", label: "Inventory" },
-  { to: "/routes", label: "Routes" },
-];

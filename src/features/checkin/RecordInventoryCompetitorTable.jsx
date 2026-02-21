@@ -9,7 +9,6 @@ export default function RecordInventoryCompetitorTable({
     rows,
     emptyRow,
     handleChange,
-    addRow,
     deleteRow,
   } = inventoryCompetitor;
 
@@ -52,7 +51,7 @@ export default function RecordInventoryCompetitorTable({
 
               <Table.Cell>
                 <Button
-                  variant="delete"
+                  variation="delete"
                   onClick={() => deleteRow(i)}
                 >
                   Delete

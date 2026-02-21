@@ -3,7 +3,7 @@ import styled from "styled-components";
 export default function ShopName() {
   return (
     <ShopNameWrapper>
-      Shop: <ShopNameText>(Shop name here...)</ShopNameText>
+      <ShopNameText>(Shop name here...)</ShopNameText>
     </ShopNameWrapper>
   );
 }
