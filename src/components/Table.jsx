@@ -16,38 +16,29 @@ function Header({ children }) {
   );
 }
 
-
-
 function Body({ data, render }) {
   return <tbody>{data.map(render)}</tbody>;
 }
 
-
-
 function Row({ children }) {
   return (
-  <StyledRow>                           {/*tr*/}
-    {children}
-  </StyledRow>
+    <StyledRow>                                   {/*tr*/}
+      {children}
+    </StyledRow>
   );            
 }
 
-
-
 function Cell({ children, ...props }) {
   return (
-  <StyledCell {...props}>               {/*td*/}
-    {children}
-  </StyledCell>
+    <StyledCell {...props}>                       {/*td*/}
+      {children}
+    </StyledCell>
   );
 }
-
 
 function Input(props) {
   return <StyledInput {...props} />;
 }
-
-
 
 function FileButton({ children, ...props }) {
   return (
@@ -91,6 +82,12 @@ const StyledTable = styled.table`
 const StyledHead = styled.thead`
   background-color: var(--color-brown-700);
   color: var(--color-grey-0);
+
+  th {
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    text-align: center;
+  }
 `;
 
 const StyledRow = styled.tr`
@@ -111,7 +108,7 @@ const StyledCell = styled.td`
 
 const StyledInput = styled.input`
   width: 100%;
-  height: 3.6rem;
+  height: 3.4rem;
   padding: 0 1rem;
   border: 1px solid var(--color-brown-600);
   background-color: var(--bg-main);

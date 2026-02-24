@@ -1,35 +1,36 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import Button from "../components/Button";
 import Card from "../components/Card";
-import { useVehicleContext } from "../contexts/VehicalContext"; // Use context
-import FileUploadButton from "../components/FileUploadButton"; // Import the FileUploadButton component
+import { useVehicleContext } from "../contexts/VehicalContext";
 
 export default function PunchIn() {
-  const { setOwnVehicle } = useVehicleContext(); // Get setOwnVehicle from context
+  const { setOwnVehicle } = useVehicleContext();
+
   const {
     register,
     handleSubmit,
-    setValue, // Use setValue to set form data (for file input)
     watch,
-    formState: { isValid },
+    reset,
+    formState: { isValid, errors },
   } = useForm({
     mode: "onChange",
+    shouldUnregister: true,
   });
 
   const ownVehicle = watch("ownVehicle");
-
-  useEffect(() => {
-    if (ownVehicle === "yes") {
-      setOwnVehicle(true); // Update the context when "Yes" is selected
-    } else {
-      setOwnVehicle(false);
-    }
-  }, [ownVehicle, setOwnVehicle]);
+  const image = watch("image");
 
   const onSubmit = (data) => {
-    console.log(data); // This will include the file if it's set correctly
+    const hasVehicle = data.ownVehicle === "yes";
+    setOwnVehicle(hasVehicle);
+
+    console.log(data);
+    const image = data.image?.[0];
+    console.log(image);
+
+    // reset entire form
+    reset();
   };
 
   return (
@@ -47,13 +48,16 @@ export default function PunchIn() {
           </Select>
         </FormGroup>
 
-        {/* Show other fields only if "Yes" is selected */}
         {ownVehicle === "yes" && (
           <>
             {/* Vehicle Type */}
             <FormGroup>
               <Label>Vehicle Type</Label>
-              <Select {...register("vehicleType", { required: true })}>
+              <Select
+                {...register("vehicleType", {
+                  required: "Vehicle type is required",
+                })}
+              >
                 <option value="">Select</option>
                 <option>Bike</option>
                 <option>Car</option>
@@ -65,17 +69,35 @@ export default function PunchIn() {
               <Label>Odometer Reading (KM)</Label>
               <Input
                 type="number"
-                {...register("odometer", { required: true })}
+                {...register("odometer", {
+                  required: "Odometer reading is required",
+                })}
               />
             </FormGroup>
 
             {/* Upload Image */}
-            <FileUploadButton
-              label="Upload Image"
-              selectedFile={null} // No need to manage this here, FileUploadButton does it
-              setFileValue={setValue} // Pass setValue to FileUploadButton
-              name="file" // Name to be used for file in form
-            />
+            <FormGroup>
+              <Label>Upload Image</Label>
+
+              <UploadWrapper htmlFor="fileInput">
+                <HiddenFileInput
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  {...register("image", {
+                    required: "Image is required",
+                  })}
+                />
+
+                <UploadButton>
+                  {image?.length ? "Choose Another" : "Choose Image"}
+                </UploadButton>
+              </UploadWrapper>
+
+              {image?.length > 0 && <FileName>{image[0].name}</FileName>}
+
+              {errors.image && <ErrorText>{errors.image.message}</ErrorText>}
+            </FormGroup>
           </>
         )}
 
@@ -86,6 +108,8 @@ export default function PunchIn() {
     </Card>
   );
 }
+
+/* ================== Styled Components ================== */
 
 const Title = styled.h2`
   font-size: 2rem;
@@ -113,14 +137,45 @@ const Label = styled.label`
 
 const Input = styled.input`
   padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
   background-color: var(--bg-main);
 `;
 
 const Select = styled.select`
   padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
   background-color: var(--bg-main);
+`;
+
+/* 🔥 Upload Styling */
+
+const UploadWrapper = styled.label`
+  position: relative;
+  width: fit-content;
+  cursor: pointer;
+`;
+
+const HiddenFileInput = styled.input`
+  display: none;
+`;
+
+const UploadButton = styled.div`
+  background-color: var(--color-grey-200);
+  padding: 0.8rem 1.4rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.3rem;
+
+  &:hover {
+    background-color: var(--color-grey-300);
+  }
+`;
+
+const FileName = styled.span`
+  font-size: 1.2rem;
+  color: var(--color-brown-600);
+`;
+
+const ErrorText = styled.span`
+  font-size: 1.2rem;
+  color: #dc2626;
 `;

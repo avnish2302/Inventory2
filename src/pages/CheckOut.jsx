@@ -1,14 +1,17 @@
 import { useState } from "react";
 import ShopName from "../components/ShopName";
 import Button from "../components/Button";
-import Card from "../components/Card";  // Importing Card Component
+import Card from "../components/Card"; // Importing Card Component
 import styled from "styled-components";
+import { useCashContext } from "../contexts/CashContext";
+import { useInventoryContext } from "../contexts/InventoryContext";
+import { useShopContext } from "../contexts/ShopContext";
 
-export default function CheckOut({
-  shopsVisited = 0,
-  shopsPending = 0,
-}) {
+export default function CheckOut() {
   const [timestamp, setTimestamp] = useState(null);
+  const { cashCollected } = useCashContext();
+  const { totalInventory } = useInventoryContext();
+  const { shopsVisited, shopsPending, updateShops } = useShopContext();
 
   /* ---------- CALCULATIONS ---------- */
 
@@ -23,17 +26,16 @@ export default function CheckOut({
 
   return (
     <Wrapper>
-        <ShopName/>
+      <ShopName />
       <Card width="100rem">
-
         {/* ---------- ACTIVITY SUMMARY ---------- */}
         <Section>
           <h2>Activity Summary</h2>
           <Grid>
             <GridItem>Entered Inventory</GridItem>
-            <GridItem>: 0</GridItem>
+            <GridItem>: {totalInventory}</GridItem>
             <GridItem>Collected Cash</GridItem>
-            <GridItem>: 0 Rs</GridItem>
+            <GridItem>: {cashCollected} Rs</GridItem>
             <GridItem>Promotion Given</GridItem>
             <GridItem>: Promotion given goes here</GridItem>
           </Grid>
@@ -49,12 +51,22 @@ export default function CheckOut({
         <ShopStats>
           <Stat>
             <StatLabel>Shops Visited</StatLabel>
-            <StatValue>{shopsVisited}</StatValue>
+            <Input
+              type="number"
+              min="0"
+              value={shopsVisited}
+              onChange={(e) => updateShops(e.target.value, shopsPending)}
+            />
           </Stat>
 
           <Stat>
             <StatLabel>Shops Pending</StatLabel>
-            <StatValue>{shopsPending}</StatValue>
+            <Input
+              type="number"
+              min="0"
+              value={shopsPending}
+              onChange={(e) => updateShops(shopsVisited, e.target.value)}
+            />
           </Stat>
         </ShopStats>
 
@@ -94,10 +106,10 @@ const Section = styled.section`
     margin-bottom: 1.2rem;
     text-decoration: underline;
   }
-    p{
+  p {
     font-size: 1.8rem;
     color: var(--color-brown-600);
-    }
+  }
 `;
 
 const Grid = styled.div`
@@ -111,11 +123,6 @@ const GridItem = styled.div`
   color: var(--color-brown-600);
 `;
 
-const Strong = styled.span`
-  font-weight: bold;
-  color: var(--color-brown-700);
-`;
-
 const ShopStats = styled.div`
   display: flex;
   margin-top: 2rem;
@@ -124,16 +131,15 @@ const ShopStats = styled.div`
 
 const Stat = styled.div`
   text-align: center;
-   margin-right : 2rem;
- 
+  margin-right: 2rem;
 `;
 
 const StatLabel = styled.p`
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--color-brown-700);
-    margin-bottom: 1.2rem;
-    text-decoration: underline;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-brown-700);
+  margin-bottom: 1.2rem;
+  text-decoration: underline;
 `;
 
 const StatValue = styled.p`
@@ -151,4 +157,11 @@ const Timestamp = styled.div`
   text-align: center;
   font-size: 1.2rem;
   color: var(--color-zinc-400);
+`;
+
+const Input = styled.input`
+  width: 100px;
+  padding: 0.6rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
 `;

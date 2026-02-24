@@ -106,14 +106,12 @@ const Label = styled.label`
 
 const Select = styled.select`
   padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
   background-color: var(--bg-main);
 `;
 
 const Input = styled.input`
   padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
   background-color: var(--bg-main);
 `;

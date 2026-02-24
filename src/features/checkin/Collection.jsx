@@ -1,23 +1,30 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import Button from "../../components/Button";
 import Card from "../../components/Card";
 import ShopName from "../../components/ShopName";
+import { useCashContext } from "../../contexts/CashContext";
 
 export default function Collection() {
-  const [selectedFile, setSelectedFile] = useState(null);
-
+  const { addCash } = useCashContext();
   const {
     register,
     handleSubmit,
     reset,
-    formState: { isValid },
+    watch,
+    formState: { isValid, errors },
   } = useForm({ mode: "onChange" });
 
-  const onSubmit = () => {
+  const file = watch("image");
+
+  const onSubmit = (data) => {
+    addCash(data.amount);
+    console.log(data);
+    const image = data.image?.[0];
+    console.log(image);
+
+    // reset entire form
     reset();
-    setSelectedFile(null);
   };
 
   return (
@@ -25,60 +32,100 @@ export default function Collection() {
       <ShopName />
 
       <Card width="100rem">
-        <Title>Collection</Title>
-
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <FieldGroup>
+          <Title>Collection</Title>
+
+          <Field>
             <Label>Invoice #</Label>
-            <Input {...register("invoice", { required: true })} />
-          </FieldGroup>
+            <Input
+              {...register("invoice", {
+                required: "Invoice number is required",
+                minLength: {
+                  value: 3,
+                  message: "Invoice must be at least 3 characters",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "Invoice cannot exceed 20 characters",
+                },
+              })}
+            />
 
-          <FieldGroup>
+            {errors.invoice && <Error>{errors.invoice.message}</Error>}
+          </Field>
+
+          <Field>
             <Label>Remarks</Label>
-            <Input {...register("remarks", { required: true })} />
-          </FieldGroup>
+            <Input
+              {...register("remarks", {
+                required: "Remarks are required",
+              })}
+            />
 
-          <FieldGroup>
+            {errors.remarks && <Error>{errors.remarks.message}</Error>}
+          </Field>
+
+          <Field>
             <Label>Payment Mode</Label>
-            <Select {...register("paymentMode", { required: true })}>
-              <option>Cash</option>
+            <Select
+              {...register("paymentMode", {
+                required: "Payment mode is required",
+              })}
+            >
+              <option value="">Select</option>
+              <option value="Cash">Cash</option>
             </Select>
-          </FieldGroup>
 
-          <FieldGroup>
+            {errors.paymentMode && <Error>{errors.paymentMode.message}</Error>}
+          </Field>
+
+          <Field>
             <Label>Amount</Label>
             <Input
               type="number"
-              {...register("amount", { required: true })}
+              min="0"
+              {...register("amount", {
+                required: "Amount is required",
+                min: {
+                  value: 0.01,
+                  message: "Amount must be greater than 0",
+                },
+                valueAsNumber: true,
+              })}
             />
-          </FieldGroup>
 
-          <FieldGroup>
+            {errors.amount && <Error>{errors.amount.message}</Error>}
+          </Field>
+
+          <Field>
             <Label>Image</Label>
 
-            {!selectedFile ? (
-              <FileButton>
-                Choose File
-                <HiddenFileInput
-                  type="file"
-                  onChange={(e) => setSelectedFile(e.target.files[0])}
-                />
-              </FileButton>
-            ) : (
-              <FileInfo>
-                <FileName>{selectedFile.name}</FileName>
-                <FileButton>
-                  Change
-                  <HiddenFileInput
-                    type="file"
-                    onChange={(e) =>
-                      setSelectedFile(e.target.files[0])
-                    }
-                  />
-                </FileButton>
-              </FileInfo>
-            )}
-          </FieldGroup>
+            <HiddenFileInput
+              id="imageInput"
+              type="file"
+              accept="image/*"
+              {...register("image", {
+                required: "Image is required",
+                validate: {
+                  fileType: (files) =>
+                    files?.[0]?.type.startsWith("image/") ||
+                    "Only image files are allowed",
+
+                  fileSize: (files) =>
+                    files?.[0]?.size < 10 * 1024 * 1024 ||
+                    "Image must be less than 10 MB",
+                },
+              })}
+            />
+
+            <UploadButton htmlFor="imageInput">
+              {file?.length ? "Choose Another" : "Choose File"}
+            </UploadButton>
+
+            {file?.length > 0 && <FileName>{file[0].name}</FileName>}
+
+            {errors.image && <Error>{errors.image.message}</Error>}
+          </Field>
 
           <Button
             type="submit"
@@ -95,24 +142,19 @@ export default function Collection() {
   );
 }
 
-/* ===============================
-   Styled Components
-================================ */
-
-const Title = styled.h3`
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: var(--color-brown-700);
-  margin-bottom: 2rem;
-`;
-
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
 `;
 
-const FieldGroup = styled.div`
+const Title = styled.h3`
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--color-brown-700);
+`;
+
+const Field = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -125,42 +167,40 @@ const Label = styled.label`
 
 const Input = styled.input`
   padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-sm);
+
   border: 1px solid var(--border-color);
   background-color: var(--bg-main);
 `;
 
 const Select = styled.select`
   padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
   background-color: var(--bg-main);
-`;
-
-const FileButton = styled.label`
-  cursor: pointer;
-  background-color: var(--color-grey-200);
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--radius-sm);
-  width: fit-content;
-
-  &:hover {
-    background-color: var(--color-grey-300);
-  }
 `;
 
 const HiddenFileInput = styled.input`
   display: none;
 `;
 
-const FileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+const UploadButton = styled.label`
+  cursor: pointer;
+  background-color: var(--color-grey-200);
+  padding: 0.8rem 1.4rem;
+  border-radius: var(--radius-sm);
+  width: fit-content;
+  font-size: 1.3rem;
+
+  &:hover {
+    background-color: var(--color-grey-300);
+  }
 `;
 
 const FileName = styled.span`
   font-size: 1.2rem;
-  color: var(--text-secondary);
-  word-break: break-all;
+  color: var(--color-brown-600);
+`;
+
+const Error = styled.span`
+  font-size: 1.2rem;
+  color: #dc2626;
 `;

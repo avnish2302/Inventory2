@@ -3,102 +3,145 @@ import Button from "../components/Button";
 import Card from "../components/Card";
 import styled from "styled-components";
 import { useVehicleContext } from "../contexts/VehicalContext";
-import FileUploadButton from "../components/FileUploadButton";
+import { useState, useEffect } from "react";
+import { useShopContext } from "../contexts/ShopContext";
+import { useInventoryContext } from "../contexts/InventoryContext";
+import { useCashContext } from "../contexts/CashContext";
 
 export default function PunchOut() {
   const { ownVehicle } = useVehicleContext();
-  const { setValue, handleSubmit, register } = useForm();
+  const { shopsVisited, shopsPending } = useShopContext();
+   const { cashCollected } = useCashContext();
+    const { totalInventory } = useInventoryContext();
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer); // cleanup
+  }, []);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { isValid, errors },
+  } = useForm({
+    mode: "onChange",
+    shouldUnregister: true, // IMPORTANT
+  });
+
+  const image = watch("image");
 
   const onSubmit = (data) => {
-    console.log(Number(data.odometer));
-    console.log(data)
-    
-  };
-
-  const handleFileChange = (file) => {
-    setValue("file", file);
+    console.log(data);
+    console.log(data.file?.[0]);
+    reset();
   };
 
   return (
     <Wrapper>
+      <Time>
+        Time :{" "}
+        {currentTime.toLocaleTimeString("en-IN", {
+          hour12: false,
+        })}
+      </Time>
+
       <Card width="100rem">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Section>
             <h2>Activity Summary</h2>
             <Grid>
               <GridItem>Entered Inventory</GridItem>
-              <GridItem>: 0</GridItem>
+              <GridItem>: {totalInventory}</GridItem>
               <GridItem>Collected Cash</GridItem>
-              <GridItem>: 0 Rs</GridItem>
+              <GridItem>: {cashCollected} Rs</GridItem>
               <GridItem>Promotion Given</GridItem>
-              <GridItem>: Promotion given goes here</GridItem>
+              <GridItem>: </GridItem>
               <GridItem>Distance covered</GridItem>
-              <GridItem>: __kms</GridItem>
+              <GridItem>: </GridItem>
               <GridItem>Shops Visited</GridItem>
-              <GridItem>: 7 +1</GridItem>
+              <GridItem>: {shopsVisited}</GridItem>
               <GridItem>Shops not visited</GridItem>
-              <GridItem>: 1</GridItem>
+              <GridItem>: {shopsPending}</GridItem>
             </Grid>
           </Section>
 
-          <Section>
-            {/* Conditionally render Odometer and Image inputs */}
-            {ownVehicle === true && (
-              <>
-                <FormGroup>
-                  <Label>Odometer Reading (KM)</Label>
-                  <Input type="number"
-                   {...register("odometer", {required: true})}
-                   />
-                </FormGroup>
-                <FileUploadButton
-                  label="Upload Image"
-                  selectedFile={null}
-                  setFileValue={setValue}
-                  name="file"
-                  onFileChange={handleFileChange} // Pass the file change handler
+          {ownVehicle === true && (
+            <Section>
+              <Field>
+                <Label>Odometer Reading (KM)</Label>
+                <Input
+                  type="number"
+                  {...register("odometer", {
+                    required: "Odometer reading is required",
+                  })}
                 />
-              </>
-            )}
-          </Section>
+                {errors.odometer && <Error>{errors.odometer.message}</Error>}
+              </Field>
+
+              <Field>
+                <Label>Upload Image</Label>
+
+                <HiddenFileInput
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  {...register("image", {
+                    required: "Image is required",
+                  })}
+                />
+
+                <UploadButton htmlFor="fileInput">
+                  {image?.length ? "Choose Another" : "Choose Image"}
+                </UploadButton>
+
+                {image?.length > 0 && <FileName>{image[0].name}</FileName>}
+
+                {errors.image && <Error>{errors.file.message}</Error>}
+              </Field>
+            </Section>
+          )}
 
           <ButtonWrapper>
             <Button
               type="submit"
-              variant="primary"
+              variation="primary"
               size="md"
+              disabled={ownVehicle ? !isValid : false}
             >
               Save
             </Button>
           </ButtonWrapper>
-        </form>
+        </Form>
       </Card>
     </Wrapper>
   );
 }
 
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  margin-bottom: 10px;
-`;
-
 const Wrapper = styled.div`
   padding: 2.4rem;
-  background-color: var(--bg-main);
-  color: var(--text-primary);
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 const Section = styled.section`
-  margin-bottom: 2.4rem;
-  h2{
+  h2 {
     font-size: 2rem;
     font-weight: 600;
     color: var(--color-brown-700);
     margin-bottom: 1.2rem;
     text-decoration: underline;
   }
+    
 `;
 
 const Grid = styled.div`
@@ -110,6 +153,50 @@ const Grid = styled.div`
 const GridItem = styled.div`
   font-size: 1.8rem;
   color: var(--color-brown-600);
+ 
+`;
+
+const Field = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+`;
+
+const Label = styled.label`
+  font-size: 1.3rem;
+`;
+
+const Input = styled.input`
+  margin-bottom: 15px;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--border-color);
+`;
+
+const HiddenFileInput = styled.input`
+  display: none;
+`;
+
+const UploadButton = styled.label`
+  cursor: pointer;
+  background-color: var(--color-grey-200);
+  padding: 0.8rem 1.4rem;
+   font-size: 1.3rem;
+  border-radius: var(--radius-sm);
+  width: fit-content;
+
+  &:hover {
+    background-color: var(--color-grey-300);
+  }
+`;
+
+const FileName = styled.span`
+  font-size: 1.2rem;
+  color: var(--color-brown-600);
+`;
+
+const Error = styled.span`
+  font-size: 1.2rem;
+  color: #dc2626;
 `;
 
 const ButtonWrapper = styled.div`
@@ -117,21 +204,9 @@ const ButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-const Timestamp = styled.div`
-  text-align: center;
-  font-size: 1.2rem;
-  color: var(--color-zinc-400);
-`;
-
-const Label = styled.label`
-  margin-top: 10px;
-  font-size: 1.3rem;
-  color: var(--color-grey-700);
-`;
-
-const Input = styled.input`
-  padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-main);
+const Time = styled.div`
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 1.6rem;
 `;

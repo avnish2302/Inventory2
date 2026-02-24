@@ -96,21 +96,21 @@ const Form = styled.form`
 
 const InputField = styled.input`
   padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-sm);
+
   border: 1px solid var(--border-color);
   background-color: var(--bg-main);
 `;
 
 const Select = styled.select`
   padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-sm);
+
   border: 1px solid var(--border-color);
   background-color: var(--bg-main);
 `;
 
 const Textarea = styled.textarea`
   padding: 0.8rem 1.2rem;
-  border-radius: var(--radius-sm);
+  
   border: 1px solid var(--border-color);
   background-color: var(--bg-main);
 `;

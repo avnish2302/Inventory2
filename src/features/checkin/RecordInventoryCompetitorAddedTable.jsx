@@ -20,8 +20,8 @@ export default function RecordInventoryCompetitorAddedTable({
         <Table.Cell>Category</Table.Cell>
         <Table.Cell>Product</Table.Cell>
         <Table.Cell>SKU</Table.Cell>
-        <Table.Cell>Case</Table.Cell>
-        <Table.Cell>Bottle</Table.Cell>
+        <Table.Cell>Case (Qty)</Table.Cell>
+        <Table.Cell>Bottle (Qty)</Table.Cell>
         <Table.Cell>Actions</Table.Cell>
       </Table.Header>
 
