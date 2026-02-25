@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { useCashContext } from "../contexts/CashContext";
 import { useInventoryContext } from "../contexts/InventoryContext";
 import { useShopContext } from "../contexts/ShopContext";
+import { toast } from "react-toastify";
 
 export default function CheckOut() {
   const { cashCollected } = useCashContext();
@@ -17,6 +18,7 @@ export default function CheckOut() {
   /* ---------- SAVE ---------- */
 
   const handleSave = () => {
+    toast.success("Saved successfully!");
     
   };
 
@@ -77,8 +79,6 @@ export default function CheckOut() {
     </Wrapper>
   );
 }
-
-/* =============================== STYLED COMPONENTS ============================== */
 
 const Wrapper = styled.div`
   padding: 2.4rem;

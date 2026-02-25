@@ -4,6 +4,7 @@ import Button from "../../components/Button";
 import Card from "../../components/Card";
 import ShopName from "../../components/ShopName";
 import { useCashContext } from "../../contexts/CashContext";
+import { toast } from "react-toastify";
 
 export default function Collection() {
   const { addCash } = useCashContext();
@@ -22,6 +23,7 @@ export default function Collection() {
     console.log(data);
     const image = data.image?.[0];
     console.log(image);
+    toast.success("Saved successfully!");
 
     // reset entire form
     reset();

@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useShopContext } from "../contexts/ShopContext";
 import { useInventoryContext } from "../contexts/InventoryContext";
 import { useCashContext } from "../contexts/CashContext";
+import { toast } from "react-toastify";
 
 export default function PunchOut() {
   const { ownVehicle } = useVehicleContext();
@@ -39,6 +40,7 @@ export default function PunchOut() {
   const onSubmit = (data) => {
     console.log(data);
     console.log(data.image?.[0]);
+    toast.success("Saved successfully!");
     reset();
   };
 

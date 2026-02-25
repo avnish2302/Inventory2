@@ -17,10 +17,6 @@ export default function Login() {
   );
 }
 
-/* ===============================
-   Styled Components
-================================ */
-
 const Content = styled.div`
 display : flex;
 flex-direction : column;

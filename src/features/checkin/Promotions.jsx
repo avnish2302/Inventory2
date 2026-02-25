@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Button from "../../components/Button";
 import Card from "../../components/Card";
 import ShopName from "../../components/ShopName";
+import { toast } from "react-toastify";
 
 export default function Promotions() {
   const {
@@ -14,6 +15,7 @@ export default function Promotions() {
 
   const onSubmit = (data) => {
     console.log("Saved:", data);
+    toast.success("Saved successfully!");
     reset();
   };
 

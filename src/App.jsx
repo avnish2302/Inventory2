@@ -17,11 +17,14 @@ import Routes from "./pages/Routes";
 import { CashProvider } from "./contexts/CashContext";
 import { InventoryProvider } from "./contexts/InventoryContext";
 import { ShopProvider } from "./contexts/ShopContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <>
       <GlobalStyles />
+      <ToastContainer position="top-right" autoClose={3000} />
       <ShopProvider>
         <InventoryProvider>
           <CashProvider>
@@ -34,16 +37,16 @@ function App() {
                       path="/checkin"
                       element={<Navigate to="/checkin/main" replace />}
                     />
-                    <Route path="/checkin/:tab" element={<CheckIn />} />
-                    <Route path="/checkout" element={<CheckOut />} />
-                    <Route path="/inventory" element={<Inventory />} />
-                    <Route path="/punchin" element={<PunchIn />} />
-                    <Route path="/punchout" element={<PunchOut />} />
+                    <Route path="/checkin/:tab" element={<CheckIn/>}/>
+                    <Route path="/checkout" element={<CheckOut/>}/>
+                    <Route path="/inventory" element={<Inventory />}/>
+                    <Route path="/punchin" element={<PunchIn/>}/>
+                    <Route path="/punchout" element={<PunchOut/>}/>
                     <Route
                       path="/routes"
-                      element={<Navigate to="/routes/self" replace />}
+                      element={<Navigate to="/routes/self" replace/>}
                     />
-                    <Route path="/routes/:tab" element={<Routes />} />
+                    <Route path="/routes/:tab" element={<Routes/>}/>
                   </Route>
                 </BrowserRouterRoutes>
               </BrowserRouter>

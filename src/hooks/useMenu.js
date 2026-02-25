@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export function useMenu() {
   const emptyRow = {
@@ -74,6 +75,7 @@ export function useMenu() {
     setEditIndex(null);
 
   const handleSaveToDatabase = () => {
+    toast.success("Saved successfully!");
     console.log(saved);
   };
 

@@ -40,9 +40,6 @@ export default function Routes() {
   );
 }
 
-/* ===============================
-   Styled Components
-================================ */
 
 const Wrapper = styled.div`
   display: flex;

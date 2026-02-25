@@ -4,6 +4,7 @@ import Button from "../../components/Button";
 import Table from "../../components/Table";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function SelfAddedTable() {
   const [rows, setRows] = useState([]);
@@ -72,6 +73,7 @@ export default function SelfAddedTable() {
 
   const handleSend = () => {
     setRows((prev) => approveAll(prev));
+    toast.success("Sent for approval!");
   };
 
   const handleDelete = (id) => {

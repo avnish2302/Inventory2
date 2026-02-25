@@ -3,6 +3,7 @@ import Button from "../../components/Button";
 import ShopName from "../../components/ShopName";
 import Card from "../../components/Card";
 import styled from "styled-components";
+import { toast } from "react-toastify";
 
 export default function Main() {
   const {
@@ -17,7 +18,8 @@ export default function Main() {
   const notListed = watch("notListed");
 
   const onSubmit = () => {
-    console.log("saved");
+    toast.success("Saved successfully!");
+    //console.log("saved");
   };
 
   return (

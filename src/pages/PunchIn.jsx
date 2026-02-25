@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import { useVehicleContext } from "../contexts/VehicalContext";
+import { toast } from "react-toastify";
 
 export default function PunchIn() {
   const { setOwnVehicle } = useVehicleContext();
@@ -25,101 +26,101 @@ export default function PunchIn() {
     const hasVehicle = data.ownVehicle === "yes";
     setOwnVehicle(hasVehicle);
 
-    console.log(data);
-    const image = data.image?.[0];
-    console.log(image);
-
-    // reset entire form
+    //console.log(data);
+    //const image = data.image?.[0];
+    //console.log(image);
+    toast.success("Punchin Successfull!");
     reset();
   };
 
   return (
     <Wrapper>
+      <Card width="42rem">
+        <Title>Punch In</Title>
 
-    <Card width="42rem">
-      <Title>Punch In</Title>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          {/* Own Vehicle */}
+          <FormGroup>
+            <Label>Own Vehicle</Label>
+            <Select {...register("ownVehicle", { required: true })}>
+              <option value="">Select</option>
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </Select>
+          </FormGroup>
 
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        {/* Own Vehicle */}
-        <FormGroup>
-          <Label>Own Vehicle</Label>
-          <Select {...register("ownVehicle", { required: true })}>
-            <option value="">Select</option>
-            <option value="no">No</option>
-            <option value="yes">Yes</option>
-          </Select>
-        </FormGroup>
-
-        {ownVehicle === "yes" && (
-          <>
-            {/* Vehicle Type */}
-            <FormGroup>
-              <Label>Vehicle Type</Label>
-              <Select
-                {...register("vehicleType", {
-                  required: "Vehicle type is required",
-                })}
-                >
-                <option value="">Select</option>
-                <option>Bike</option>
-                <option>Car</option>
-              </Select>
-            </FormGroup>
-
-            {/* Odometer */}
-            <FormGroup>
-              <Label>Odometer Reading (KM)</Label>
-              <Input
-                type="number"
-                {...register("odometer", {
-                  required: "Odometer reading is required",
-                })}
-                />
-            </FormGroup>
-
-            {/* Upload Image */}
-            <FormGroup>
-              <Label>Upload Image</Label>
-
-              <UploadWrapper htmlFor="fileInput">
-                <HiddenFileInput
-                  id="fileInput"
-                  type="file"
-                  accept="image/*"
-                  {...register("image", {
-                    required: "Image is required",
+          {ownVehicle === "yes" && (
+            <>
+              {/* Vehicle Type */}
+              <FormGroup>
+                <Label>Vehicle Type</Label>
+                <Select
+                  {...register("vehicleType", {
+                    required: "Vehicle type is required",
                   })}
+                >
+                  <option value="">Select</option>
+                  <option>Bike</option>
+                  <option>Car</option>
+                </Select>
+              </FormGroup>
+
+              {/* Odometer */}
+              <FormGroup>
+                <Label>Odometer Reading (KM)</Label>
+                <Input
+                  type="number"
+                  {...register("odometer", {
+                    required: "Odometer reading is required",
+                  })}
+                />
+              </FormGroup>
+
+              {/* Upload Image */}
+              <FormGroup>
+                <Label>Upload Image</Label>
+
+                <UploadWrapper htmlFor="fileInput">
+                  <HiddenFileInput
+                    id="fileInput"
+                    type="file"
+                    accept="image/*"
+                    {...register("image", {
+                      required: "Image is required",
+                    })}
                   />
 
-                <UploadButton>
-                  {image?.length ? "Choose Another" : "Choose Image"}
-                </UploadButton>
-              </UploadWrapper>
+                  <UploadButton>
+                    {image?.length ? "Choose Another" : "Choose Image"}
+                  </UploadButton>
+                </UploadWrapper>
 
-              {image?.length > 0 && <FileName>{image[0].name}</FileName>}
+                {image?.length > 0 && <FileName>{image[0].name}</FileName>}
 
-              {errors.image && <ErrorText>{errors.image.message}</ErrorText>}
-            </FormGroup>
-          </>
-        )}
+                {errors.image && <ErrorText>{errors.image.message}</ErrorText>}
+              </FormGroup>
+            </>
+          )}
 
-        <Button type="submit" variation="primary" size="md" disabled={!isValid}>
-          Punch In
-        </Button>
-      </Form>
-    </Card>
-        </Wrapper>
+          <Button
+            type="submit"
+            variation="primary"
+            size="md"
+            disabled={!isValid}
+          >
+            Punch In
+          </Button>
+        </Form>
+      </Card>
+    </Wrapper>
   );
 }
-
-/* ================== Styled Components ================== */
 
 const Wrapper = styled.div`
   min-height: 70vh;
   display: flex;
   justify-content: center;
   align-items: center;
- 
 `;
 
 const Title = styled.h2`

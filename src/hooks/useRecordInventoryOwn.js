@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 
 
@@ -64,7 +65,8 @@ export function useRecordInventoryOwn() {
     setEditIndex(null);
 
   const handleSaveToDB = () => {
-    console.log("Saving to DB", saved);
+
+    toast.success("Saved Successfully")
   };
 
   return {

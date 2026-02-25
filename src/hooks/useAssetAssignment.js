@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export function useAssetAssignment() {
   const emptyRow = {
@@ -57,6 +58,7 @@ export function useAssetAssignment() {
     setEditIndex(null);
 
   const handleSaveToDatabase = () => {
+    toast.success("Saved successfully!");
     console.log("Saving to DB:", saved);
   };
 

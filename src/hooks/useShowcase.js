@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export function useShowcase() {
   const emptyRow = {
@@ -52,6 +53,7 @@ export function useShowcase() {
     setEditIndex(null);
 
   const handleSaveToDatabase = () => {
+    toast.success("Saved successfully!");
     console.log(saved);
   };
 

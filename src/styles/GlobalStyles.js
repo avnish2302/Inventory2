@@ -8,16 +8,6 @@ const GlobalStyles = createGlobalStyle`
 
 :root {
 
-  /* Brand Colors */
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-200: #c7d2fe;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
-  --color-brand-800: #3730a3;
-  --color-brand-900: #312e81;
-
   /* Brown / Amber Scale */
   --color-brown-50:  #fdf8f3;
   --color-brown-100: #fbe9d7;

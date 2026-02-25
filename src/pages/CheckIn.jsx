@@ -55,9 +55,6 @@ export default function CheckIn() {
   );
 }
 
-/* ===============================
-   Styled Components
-================================ */
 
 const Wrapper = styled.div`
   display: flex;

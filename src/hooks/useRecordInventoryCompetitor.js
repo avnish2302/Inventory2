@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export function useRecordInventoryCompetitor() {
   const emptyRow = {
@@ -72,6 +73,7 @@ export function useRecordInventoryCompetitor() {
     }));
 
     console.log(formatted);
+    toast.success("Saved successfully!");
   };
 
   return {
