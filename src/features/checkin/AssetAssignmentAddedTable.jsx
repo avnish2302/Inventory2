@@ -1,5 +1,6 @@
 import Table from "../../components/Table";
 import Button from "../../components/Button";
+import styled from "styled-components";
 
 export default function AssetAssignmentAddedTable({ asset }) {
   return (
@@ -58,6 +59,8 @@ export default function AssetAssignmentAddedTable({ asset }) {
             <Table.Cell>{row.image?.name || "Image"}</Table.Cell>
 
             <Table.Cell>
+              <Actions>
+
               {asset.editIndex === i ? (
                 <Button variation="saveEdit" onClick={asset.handleSaveEdit}>
                   Save Edit
@@ -71,6 +74,7 @@ export default function AssetAssignmentAddedTable({ asset }) {
               <Button variation="delete" onClick={() => asset.handleDeleteSaved(i)}>
                 Delete
               </Button>
+              </Actions>
             </Table.Cell>
           </Table.Row>
         )}
@@ -78,3 +82,10 @@ export default function AssetAssignmentAddedTable({ asset }) {
     </Table>
   );
 }
+const Actions = styled.div`
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+`;

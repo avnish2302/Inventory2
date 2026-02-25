@@ -2,15 +2,15 @@ import styled from "styled-components";
 
 function Table({ children }) {
   return (
-    <Wrapper>                                 {/*div*/}
-      <StyledTable>{children}</StyledTable>   {/*table*/}
+    <Wrapper>
+      <StyledTable>{children}</StyledTable>
     </Wrapper>
   );
 }
 
 function Header({ children }) {                
   return (
-    <StyledHead>                               {/*thead*/}
+    <StyledHead>
       <tr>{children}</tr>
     </StyledHead>
   );
@@ -22,7 +22,7 @@ function Body({ data, render }) {
 
 function Row({ children }) {
   return (
-    <StyledRow>                                   {/*tr*/}
+    <StyledRow>
       {children}
     </StyledRow>
   );            
@@ -30,7 +30,7 @@ function Row({ children }) {
 
 function Cell({ children, ...props }) {
   return (
-    <StyledCell {...props}>                       {/*td*/}
+    <StyledCell {...props}>
       {children}
     </StyledCell>
   );

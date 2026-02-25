@@ -5,7 +5,6 @@ import Card from "../../components/Card";
 import { useRecordInventoryOwn } from "../../hooks/useRecordInventoryOwn";
 import RecordInventoryOwnTable from "./RecordInventoryOwnTable";
 import RecordInventoryOwnAddedTable from "./RecordInventoryOwnAddedTable";
-import AddRowButton from "../../components/AddRowButton";
 import { useInventoryContext } from "../../contexts/InventoryContext";
 
 export default function RecordInventoryOwn() {
@@ -15,7 +14,7 @@ export default function RecordInventoryOwn() {
   return (
     <Wrapper>
       <ShopName />
-      <AddRowButton onClick={own.addRow} />
+      <Gap/>
 
       <Card width="100rem">
         <Section>
@@ -75,3 +74,8 @@ const Center = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+const Gap = styled.div`
+margin-bottom : 26px;
+
+`

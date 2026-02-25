@@ -34,6 +34,8 @@ export default function PunchIn() {
   };
 
   return (
+    <Wrapper>
+
     <Card width="42rem">
       <Title>Punch In</Title>
 
@@ -57,7 +59,7 @@ export default function PunchIn() {
                 {...register("vehicleType", {
                   required: "Vehicle type is required",
                 })}
-              >
+                >
                 <option value="">Select</option>
                 <option>Bike</option>
                 <option>Car</option>
@@ -72,7 +74,7 @@ export default function PunchIn() {
                 {...register("odometer", {
                   required: "Odometer reading is required",
                 })}
-              />
+                />
             </FormGroup>
 
             {/* Upload Image */}
@@ -87,7 +89,7 @@ export default function PunchIn() {
                   {...register("image", {
                     required: "Image is required",
                   })}
-                />
+                  />
 
                 <UploadButton>
                   {image?.length ? "Choose Another" : "Choose Image"}
@@ -106,10 +108,19 @@ export default function PunchIn() {
         </Button>
       </Form>
     </Card>
+        </Wrapper>
   );
 }
 
 /* ================== Styled Components ================== */
+
+const Wrapper = styled.div`
+  min-height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+`;
 
 const Title = styled.h2`
   font-size: 2rem;

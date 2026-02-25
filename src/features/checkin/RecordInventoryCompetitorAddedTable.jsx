@@ -1,5 +1,6 @@
 import Table from "../../components/Table";
 import Button from "../../components/Button";
+import styled from "styled-components";
 
 export default function RecordInventoryCompetitorAddedTable({
   inventoryCompetitor,
@@ -55,19 +56,21 @@ export default function RecordInventoryCompetitorAddedTable({
             ))}
 
             <Table.Cell>
+              <Actions>
+
               {editIndex === i ? (
                 <Button
-                  variation="saveEdit"
-                  size="sm"
-                  onClick={handleSaveEdit}
+                variation="saveEdit"
+                size="sm"
+                onClick={handleSaveEdit}
                 >
                   Save Edit
                 </Button>
               ) : (
                 <Button
-                  variation="edit"
-                  size="sm"
-                  onClick={() => setEditIndex(i)}
+                variation="edit"
+                size="sm"
+                onClick={() => setEditIndex(i)}
                 >
                   Edit
                 </Button>
@@ -79,9 +82,10 @@ export default function RecordInventoryCompetitorAddedTable({
                 onClick={() =>
                   handleDeleteSaved(i)
                 }
-              >
+                >
                 Delete
               </Button>
+                </Actions>
             </Table.Cell>
           </Table.Row>
         )}
@@ -89,3 +93,11 @@ export default function RecordInventoryCompetitorAddedTable({
     </Table>
   );
 }
+
+const Actions = styled.div`
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+`;

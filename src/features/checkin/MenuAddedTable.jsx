@@ -1,6 +1,6 @@
-
 import Table from "../../components/Table";
 import Button from "../../components/Button";
+import styled from "styled-components";
 
 export default function MenuAddedTable({ menu }) {
   return (
@@ -56,24 +56,27 @@ export default function MenuAddedTable({ menu }) {
               )}
             </Table.Cell>
 
-            <Table.Cell>
-              {row.image?.name || "Image"}
-            </Table.Cell>
+            <Table.Cell>{row.image?.name || "Image"}</Table.Cell>
 
             <Table.Cell>
-              {menu.editIndex === i ? (
-                <Button variation="saveEdit" onClick={menu.handleSaveEdit}>
-                  Save Edit
-                </Button>
-              ) : (
-                <Button variation="edit" onClick={() => menu.setEditIndex(i)}>
-                  Edit
-                </Button>
-              )}
+              <Actions>
+                {menu.editIndex === i ? (
+                  <Button variation="saveEdit" onClick={menu.handleSaveEdit}>
+                    Save Edit
+                  </Button>
+                ) : (
+                  <Button variation="edit" onClick={() => menu.setEditIndex(i)}>
+                    Edit
+                  </Button>
+                )}
 
-              <Button variation="delete" onClick={() => menu.handleDeleteSaved(i)}>
-                Delete
-              </Button>
+                <Button
+                  variation="delete"
+                  onClick={() => menu.handleDeleteSaved(i)}
+                >
+                  Delete
+                </Button>
+              </Actions>
             </Table.Cell>
           </Table.Row>
         )}
@@ -81,3 +84,11 @@ export default function MenuAddedTable({ menu }) {
     </Table>
   );
 }
+
+const Actions = styled.div`
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+`;

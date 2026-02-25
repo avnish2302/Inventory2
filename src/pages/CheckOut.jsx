@@ -8,7 +8,6 @@ import { useInventoryContext } from "../contexts/InventoryContext";
 import { useShopContext } from "../contexts/ShopContext";
 
 export default function CheckOut() {
-  const [timestamp, setTimestamp] = useState(null);
   const { cashCollected } = useCashContext();
   const { totalInventory } = useInventoryContext();
   const { shopsVisited, shopsPending, updateShops } = useShopContext();
@@ -18,10 +17,7 @@ export default function CheckOut() {
   /* ---------- SAVE ---------- */
 
   const handleSave = () => {
-    const currentTime = new Date().toISOString();
-    setTimestamp(currentTime);
-
-    console.log("Checkout saved at:", currentTime);
+    
   };
 
   return (
@@ -77,12 +73,6 @@ export default function CheckOut() {
           </Button>
         </ButtonWrapper>
 
-        {/* ---------- TIMESTAMP DISPLAY ---------- */}
-        {timestamp && (
-          <Timestamp>
-            Saved at: {new Date(timestamp).toLocaleString()}
-          </Timestamp>
-        )}
       </Card>
     </Wrapper>
   );

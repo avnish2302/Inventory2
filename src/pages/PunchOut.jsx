@@ -20,7 +20,7 @@ export default function PunchOut() {
       setCurrentTime(new Date());
     }, 1000);
 
-    return () => clearInterval(timer); // cleanup
+    return () => clearInterval(timer);
   }, []);
 
   const {
@@ -31,14 +31,14 @@ export default function PunchOut() {
     formState: { isValid, errors },
   } = useForm({
     mode: "onChange",
-    shouldUnregister: true, // IMPORTANT
+    shouldUnregister: true,
   });
 
   const image = watch("image");
 
   const onSubmit = (data) => {
     console.log(data);
-    console.log(data.file?.[0]);
+    console.log(data.image?.[0]);
     reset();
   };
 

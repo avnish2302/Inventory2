@@ -1,13 +1,8 @@
 import styled, { css } from "styled-components";
 
-function Button({
-  children,
-  variation = "primary",
-  size = "sm",
-  ...props
-}) {
+function Button({ children, variation = "primary", size = "sm", ...props }) {
   return (
-    <StyledButton variation={variation} size={size} {...props}>
+    <StyledButton $variation={variation} $size={size} {...props}>
       {children}
     </StyledButton>
   );
@@ -21,8 +16,8 @@ const StyledButton = styled.button`
   white-space: nowrap;
   transition: background-color 0.2s ease;
 
-  ${props => sizes[props.size]}
-  ${props => variations[props.variation]}
+  ${(props) => sizes[props.$size]}
+  ${(props) => variations[props.$variation]}
 
   &:disabled {
     cursor: not-allowed;
@@ -62,7 +57,7 @@ const variations = {
   edit: css`
     background-color: #1e3a8a;
     color: #dbeafe;
-    margin-right : 5px;
+    margin-right: 5px;
 
     &:hover {
       background-color: #172554;
@@ -72,7 +67,7 @@ const variations = {
   saveEdit: css`
     background-color: #14532d;
     color: #dcfce7;
-    margin-right : 5px;
+    margin-right: 5px;
 
     &:hover {
       background-color: #052e16;

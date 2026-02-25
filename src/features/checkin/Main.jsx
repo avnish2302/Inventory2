@@ -23,6 +23,7 @@ export default function Main() {
   return (
     <div>
       <ShopName className="mb-3"/>
+      <Gap/>
       <Card width="100rem">
         <Form onSubmit={handleSubmit(onSubmit)}>
           {/* ---------------- NOT LISTED ---------------- */}
@@ -120,3 +121,8 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
+
+const Gap = styled.div`
+margin-bottom : 110px;
+
+`

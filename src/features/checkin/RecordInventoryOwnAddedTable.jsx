@@ -42,19 +42,21 @@ export default function RecordInventoryOwnAddedTable({ own }) {
                   ))}
 
                   <Td>
+                    <Actions>
+
                     {own.editIndex === i ? (
                       <Button
-                        variation="saveEdit"
-                        size="sm"
-                        onClick={own.handleSaveEdit}
+                      variation="saveEdit"
+                      size="sm"
+                      onClick={own.handleSaveEdit}
                       >
                         Save Edit
                       </Button>
                     ) : (
                       <Button
-                        variation="edit"
-                        size="sm"
-                        onClick={() => own.setEditIndex(i)}
+                      variation="edit"
+                      size="sm"
+                      onClick={() => own.setEditIndex(i)}
                       >
                         Edit
                       </Button>
@@ -63,9 +65,10 @@ export default function RecordInventoryOwnAddedTable({ own }) {
                       variation="delete"
                       size="sm"
                       onClick={() => own.handleDeleteSaved(i)}
-                    >
+                      >
                       Delete
                     </Button>
+                      </Actions>
                   </Td>
                 </tr>
               ))}
@@ -123,4 +126,12 @@ const Input = styled.input`
     outline: none;
     border-color: var(--color-brown-600);
   }
+`;
+
+const Actions = styled.div`
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
 `;
