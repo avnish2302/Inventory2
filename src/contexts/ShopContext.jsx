@@ -9,8 +9,8 @@ export const ShopProvider = ({ children }) => {
   const [shopsPending, setShopsPending] = useState("");
 
   const updateShops = (visited, pending) => {
-    setShopsVisited(Number(visited));
-    setShopsPending(Number(pending));
+    setShopsVisited(visited);
+    setShopsPending(pending);
   };
 
   return (
