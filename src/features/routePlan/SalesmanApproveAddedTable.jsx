@@ -16,9 +16,6 @@ export default function SalesmanApproveAddedTable() {
     formState: { isValid },
   } = useForm({ mode: "onChange" });
 
-  /* ===============================
-     MOVED LOGIC HERE
-  ================================ */
 
   const createRow = (prevRows, { planDate, salesman }) => {
     return [
@@ -56,7 +53,6 @@ export default function SalesmanApproveAddedTable() {
     }));
   };
 
-  /* =============================== */
 
   const onSubmit = (data) => {
     setRows((prev) => createRow(prev, data));

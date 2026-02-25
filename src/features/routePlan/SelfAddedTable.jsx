@@ -18,9 +18,6 @@ export default function SelfAddedTable() {
     mode: "onChange",
   });
 
-  /* =========================
-     LOGIC MOVED HERE
-  ========================== */
 
   const createRow = (prevRows, { planDate, location }) => {
     if (!planDate || !location) return prevRows;
