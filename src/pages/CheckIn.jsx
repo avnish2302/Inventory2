@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import RecordInventoryOwn from "../features/checkin/RecordInventoryOwn";
 import RecordInventoryCompetitor from "../features/checkin/RecordInventoryCompetitor";
-import ShowCase from "../features/checkin/ShowCase";
+import ShowCase from "../features/checkin/Showcase";
 import Menu from "../features/checkin/Menu";
 import Promotions from "../features/checkin/Promotions";
 import Collection from "../features/checkin/Collection";
