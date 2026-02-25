@@ -35,7 +35,7 @@ export default function CheckOut() {
             <GridItem>Collected Cash</GridItem>
             <GridItem>: {cashCollected} Rs</GridItem>
             <GridItem>Promotion Given</GridItem>
-            <GridItem>: Promotion given goes here</GridItem>
+            <GridItem>: </GridItem>
           </Grid>
         </Section>
 

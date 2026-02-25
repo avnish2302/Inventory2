@@ -5,8 +5,8 @@ const ShopContext = createContext();
 export const useShopContext = () => useContext(ShopContext);
 
 export const ShopProvider = ({ children }) => {
-  const [shopsVisited, setShopsVisited] = useState(0);
-  const [shopsPending, setShopsPending] = useState(0);
+  const [shopsVisited, setShopsVisited] = useState("");
+  const [shopsPending, setShopsPending] = useState("");
 
   const updateShops = (visited, pending) => {
     setShopsVisited(Number(visited));
